@@ -8,7 +8,7 @@ local WW = WritWorthy
 local LAM2 = LibAddonMenu2
 
 WritWorthy.name            = "WritWorthy"
-WritWorthy.version         = "6.2.5"
+WritWorthy.version         = "6.2.6"
 WritWorthy.savedVarVersion = 1
 
 WritWorthy.default = {
@@ -194,8 +194,56 @@ function WritWorthy.KnowTooltipText(know_list)
     if not know_list then return nil end
     local elements = {}
     for i, know in ipairs(know_list) do
-        local s = know:TooltipText()
-        if s then
+                        -- Include lines that don't duplicate what 
+                        -- Marify's Confirm Master Writ already report.
+        if (   (not (know.how and know.how.cmw))
+                        -- Or include duplicates if no CMW loaded, or if
+                        -- user intentionally requested duplicates.
+            or WritWorthy.CanShowCMWDuplicates()) then
+            local s = know:TooltipText()
+            if s then
+                table.insert(elements, s)
+            end
+        end
+    end
+    return table.concat(elements, "\n")
+end
+
+local function can_tooltip_mat(enable, mat_row)
+    if enable == WW.Str("lam_mat_tooltip_all") then
+        return true
+    end
+
+    if (enable == nil) or (enable == WW.Str("lam_mat_tooltip_missing_only")) then
+        return mat_row:HaveCt() < mat_row.ct 
+    end
+
+    return false
+end
+
+-- Return list of materials, with low/insufficient materials in orange/red.
+function WritWorthy.MatHaveCtTooltipText(mat_list)
+    if not WritWorthy.CanShowCMWDuplicates() then return nil end
+    if not mat_list then return nil end
+    local enable = WritWorthy.savedVariables.enable_mat_list_tooltip
+    if enable == WW.Str("lam_mat_tooltip_off") then return nil end
+
+    local elements = {}
+    for i, mat_row in ipairs(mat_list) do
+        if can_tooltip_mat(enable, mat_row) then
+            local name    = Util.decaret(GetItemLinkName(mat_row.link))
+            local need_ct = mat_row.ct or 1
+            local have_ct = mat_row:HaveCt() or 0
+            local color = Util.COLOR_WHITE
+            if have_ct < need_ct then
+                color = Util.COLOR_RED
+            end
+            local s = string.format( "|c%s%s  %d/%d|r"
+                                   , color
+                                   , name
+                                   , need_ct
+                                   , have_ct
+                                   )
             table.insert(elements, s)
         end
     end
@@ -237,6 +285,10 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
     if can_dump_matlist(WritWorthy.savedVariables.enable_mat_list_chat, parser) then
         WritWorthy.MatRow.ListDump(mat_list)
         --WritWorthy.KnowDump(know_list)
+    end
+    local mat_have_text = WritWorthy.MatHaveCtTooltipText(mat_list)
+    if mat_have_text then
+        control:AddLine(mat_have_text)
     end
     local know_text = WritWorthy.KnowTooltipText(know_list)
     if know_text then
@@ -492,9 +544,52 @@ function WritWorthy:CreateSettingsWindow()
                       end
         , requiresReload = true
         },
+
+        { type      = "dropdown"
+        , name      = WW.Str("lam_mat_tooltip_title")
+        , tooltip   = WW.Str("lam_mat_tooltip_desc")
+        , choices   = { WW.Str("lam_mat_tooltip_off")
+                      , WW.Str("lam_mat_tooltip_all")
+                      , WW.Str("lam_mat_tooltip_missing_only")
+                      }
+        , getFunc   = function()
+                        return self.savedVariables.enable_mat_list_tooltip or WW.Str("lam_mat_tooltip_missing_only")
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.enable_mat_list_tooltip = e
+                      end
+        },
+
     }
+                        -- Only show this checkbox if running Marify's
+                        -- Confirm Master Writ.
+    if ConfirmMasterWrit then
+        local o = 
+        { type      = "checkbox"
+        , name      = WW.Str("lam_cmw_title")
+        , tooltip   = WW.Str("lam_cmw_desc")
+        , getFunc   = function()
+                        return self.savedVariables.show_confirm_master_writ_duplicates
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.show_confirm_master_writ_duplicates = e and true
+                      end
+        }
+        table.insert(optionsData, o)
+    end
 
     LAM2:RegisterOptionControls(lam_addon_id, optionsData)
+end
+
+-- Should we show the "Recipe not known" and other tooltip errors that
+-- Marify's Confirm Master Writ also report?
+function WritWorthy.CanShowCMWDuplicates()
+                        -- If Confirm Master Writ isn't running, then
+                        -- we're not duplicate/redundant. Definitely show.
+    if not ConfirmMasterWrit then return true end
+
+                        -- If CMW is running, then honor the user's prefs.
+    return WritWorthy.savedVariables.show_confirm_master_writ_duplicates
 end
 
 -- SlashCommand --------------------------------------------------------------
