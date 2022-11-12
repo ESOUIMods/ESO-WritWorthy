@@ -1,13 +1,13 @@
-## Title: WritWorthy 7.3.3
-## Version: 7.3.3
-## AddOnVersion: 070303
+## Title: WritWorthy 7.3.4
+## Version: 7.3.4
+## AddOnVersion: 070304
 ## Last Updated: 2022-03-15
 ## APIVersion: 101035 101036
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
 ## Contributors: Dolgubon Friday-The13-rus
 ## SavedVariables: WritWorthyVars
-## DependsOn: LibAddonMenu-2.0>=34 LibPrice>=070200 LibLazyCrafting>=3080 LibSets>=000500 LibCharacterKnowledge>=16
+## DependsOn: LibAddonMenu-2.0>=34 LibPrice>=070200 LibLazyCrafting>=3000 LibSets>=000500 LibCharacterKnowledge>=16
 ## OptionalDependsOn: LibCustomMenu>=713 AwesomeGuildStore LibSlashCommander LibDebugLogger HomeStationMarker
 
 # Gamepad UI tooltip hook added by Friday-The13-rus
