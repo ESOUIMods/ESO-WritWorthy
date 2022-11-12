@@ -1,14 +1,14 @@
-## Title: WritWorthy 7.3.2
-## Version: 7.3.2
-## AddOnVersion: 070302
+## Title: WritWorthy 7.3.3
+## Version: 7.3.3
+## AddOnVersion: 070303
 ## Last Updated: 2022-03-15
-## APIVersion: 101033
+## APIVersion: 101035 101036
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
 ## Contributors: Dolgubon Friday-The13-rus
 ## SavedVariables: WritWorthyVars
-## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting LibSets LibCharacterKnowledge
-## OptionalDependsOn: LibCustomMenu AwesomeGuildStore LibSlashCommander LibDebugLogger HomeStationMarker
+## DependsOn: LibAddonMenu-2.0>=34 LibPrice>=070200 LibLazyCrafting>=3080 LibSets>=000500 LibCharacterKnowledge>=16
+## OptionalDependsOn: LibCustomMenu>=713 AwesomeGuildStore LibSlashCommander LibDebugLogger HomeStationMarker
 
 # Gamepad UI tooltip hook added by Friday-The13-rus
 
@@ -16,7 +16,7 @@
 # RU translation by ivann339 2019-09-06 2020-10-16
 # FR translation by JAKEZ31  2020-08-27 2021-01-05
 
-            # LibAddonMenu-2.0  required
+            # LibAddonMenu-2.0>=34  required
             #   by Seerah, sirinsidiator
             #       https://www.esoui.com/downloads/info7-LibAddonMenu.html
             #       https://github.com/sirinsidiator/ESO-LibAddonMenu
@@ -69,9 +69,9 @@
             # Optional libraries used only for unreleased WritWorthy_AutoQuest.lua.
             # Optional as long as I refuse to publish the autoquest feature.
             #
-            # LibCustomMenu     optional
+            # LibCustomMenu>=713     optional
             #   by votan
-            #       https://www.esoui.com/downloads/info1146-LibCustomMenu.html
+            #       https://www.esoui.com/downloads/info1146-LibCustomMenu>=713.html
             #   Allows "Accept Writ Quests" button in inventory window
             #
             # LibCraftText      optional
