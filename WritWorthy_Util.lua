@@ -65,6 +65,13 @@ function Util.ToWritFields(item_link)
     return o
 end
 
+-- /script d(WritWorthyExternal:ToWritFields("|H1:item:156731:4:6:0:0:0:117942:0:0:0:0:0:0:0:0:0:0:0:0:0:10000|h|h"))
+-- /script d(ZO_LinkHandler_ParseLink("|H1:item:156731:4:6:0:0:0:117942:0:0:0:0:0:0:0:0:0:0:0:0:0:10000|h|h"))
+WritWorthyExternal = {}
+function WritWorthyExternal:ToWritFields(item_link)
+  return Util.ToWritFields(item_link)
+end
+
 -- Chat Colors ---------------------------------------------------------------
 
 WritWorthy.Util.COLOR_WHITE  = "FFFFFF"

@@ -602,10 +602,7 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
     local o = Recipe:New({ fooddrink_item_id= fooddrink_item_id })
     o.recipe_item_id = Provisioning.FOODDRINK_TO_RECIPE_ITEM_ID[fooddrink_item_id]
     if not o.recipe_item_id then return nil end
-    o.recipe_link = string.format(
-              "|H1:item:%d:1:36:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
-            , o.recipe_item_id
-            )
+    o.recipe_link = string.format("|H1:item:%d:1:36:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h", o.recipe_item_id)
     o.fooddrink_link = GetItemLinkRecipeResultItemLink(
                                       o.recipe_link
                                     , LINK_STYLE_DEFAULT)

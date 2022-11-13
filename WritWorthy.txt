@@ -95,6 +95,7 @@ WritWorthy_Smithing.lua
 WritWorthy_Alchemy.lua
 WritWorthy_Enchanting.lua
 WritWorthy_Provisioning.lua
+WritWorthy_Holliday.lua
 WritWorthy_Link.lua
 WritWorthy_MatRow.lua
 WritWorthy_Window.lua

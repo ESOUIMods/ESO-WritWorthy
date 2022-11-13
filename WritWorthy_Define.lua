@@ -1,1 +1,3 @@
 WritWorthy = {}
+
+WW_CRAFTING_TYPE_FURNITURE = 8

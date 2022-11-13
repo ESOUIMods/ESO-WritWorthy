@@ -104,8 +104,9 @@ end
 function WritWorthy.ToVoucherCount(item_link)
     -- local reward_text = GenerateMasterWritRewardText(item_link)
     local fields      = Util.ToWritFields(item_link)
-    local vc          = Util.round(fields.writ_reward / 10000)
-    return vc
+    local quotient, remainder = math.modf(fields.writ_reward / 10000)
+    local writcount = quotient + math.floor(0.5 + remainder)
+    return writcount
 end
 
 -- Convert a writ link to a string with both the link and base text
