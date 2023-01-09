@@ -18,14 +18,20 @@ WritWorthy.default = {
 -- Default savedChariables: per-character saved data.
 -- Initially just data about that character's inventory.
 WritWorthy.defaultChar = {
-
   -- key = Id64ToString() of a writ that the user has
   -- asked to enquque for later crafting.
   -- val = "queued" or "completed"
   -- Yes we keep the "completed" rows around to
   -- provide some UI feedback.
-  writ_unique_id = {}
-
+  writ_unique_id = {},
+  enable_mat_price_tooltip = true,
+  enable_mat_list_chat = WW.Str("lam_mat_list_off"),
+  enable_lib_price = true,
+  enable_mm_fallback = false,
+  enable_station_colors = false,
+  enable_banked_vouchers = false,
+  lang = false,
+  enable_mat_list_tooltip = WW.Str("lam_mat_tooltip_off"),
 }
 
 local Util = WritWorthy.Util
@@ -104,8 +110,9 @@ end
 function WritWorthy.ToVoucherCount(item_link)
   -- local reward_text = GenerateMasterWritRewardText(item_link)
   local fields = Util.ToWritFields(item_link)
-  local vc = Util.round(fields.writ_reward / 10000)
-  return vc
+  local quotient, remainder = math.modf(fields.writ_reward / 10000)
+  local writcount = quotient + math.floor(0.5 + remainder)
+  return writcount
 end
 
 -- Convert a writ link to a string with both the link and base text
@@ -367,11 +374,12 @@ function WritWorthy:ScanInventoryForMasterWrits()
         if parser.ToDolRequest then
           llc_req = parser:ToDolRequest(unique_id)
         end
-        local inventory_data = { item_link = item_link
-        , parser = parser
-        , unique_id = unique_id
-        , llc_func = llc_req["function"]
-        , llc_args = llc_req.args
+        local inventory_data = {
+          item_link = item_link,
+          parser = parser,
+          unique_id = unique_id,
+          llc_func = llc_req["function"],
+          llc_args = llc_req.args
         }
         table.insert(result_list, inventory_data)
       end
@@ -464,110 +472,77 @@ function WritWorthy:CreateSettingsWindow()
     displayName = self.name,
     author = "ziggr",
     version = self.version,
+    website = "https://www.esoui.com/downloads/info1605-WritWorthy.html",
+    feedback = "https://www.esoui.com/downloads/info1605-WritWorthy.html",
     --slashCommand        = "/gg",
     registerForRefresh = false,
     registerForDefaults = false,
   }
-  local cntrlOptionsPanel = LAM2:RegisterAddonPanel(lam_addon_id
-  , panelData
-  )
+  local cntrlOptionsPanel = LAM2:RegisterAddonPanel(lam_addon_id, panelData)
   local optionsData = {
-    { type = "checkbox"
-    , name = WW.Str("lam_mat_price_tt_title")
-    , tooltip = WW.Str("lam_mat_price_tt_desc")
-    , getFunc = function()
-      return self.savedVariables.enable_mat_price_tooltip ~= false
-    end
-    , setFunc = function(e)
-      self.savedVariables.enable_mat_price_tooltip = e
-    end
+    { type = "checkbox",
+      name = WW.Str("lam_mat_price_tt_title"),
+      tooltip = WW.Str("lam_mat_price_tt_desc"),
+      getFunc = function() return self.savedVariables.enable_mat_price_tooltip ~= false end,
+      setFunc = function(e) self.savedVariables.enable_mat_price_tooltip = e end,
     },
 
-    { type = "dropdown"
-    , name = WW.Str("lam_mat_list_title")
-    , tooltip = WW.Str("lam_mat_list_desc")
-    , choices = { WW.Str("lam_mat_list_off")
-    , WW.Str("lam_mat_list_all")
-    , WW.Str("lam_mat_list_alchemy_only")
-    }
-    , getFunc = function()
-      return self.savedVariables.enable_mat_list_chat
-    end
-    , setFunc = function(e)
-      self.savedVariables.enable_mat_list_chat = e
-    end
+    { type = "dropdown",
+      name = WW.Str("lam_mat_list_title"),
+      tooltip = WW.Str("lam_mat_list_desc"),
+      choices = { WW.Str("lam_mat_list_off"),
+                  WW.Str("lam_mat_list_all"),
+                  WW.Str("lam_mat_list_alchemy_only")
+      },
+      getFunc = function() return self.savedVariables.enable_mat_list_chat end,
+      setFunc = function(e) self.savedVariables.enable_mat_list_chat = e end,
     },
 
-    { type = "checkbox"
-    , name = WW.Str("lam_lib_price_title")
-    , tooltip = WW.Str("lam_lib_price_desc")
-    , getFunc = function()
-      return self.savedVariables.enable_lib_price
-        or (self.savedVariables.enable_lib_price == nil)
-    end
-    , setFunc = function(e)
-      self.savedVariables.enable_lib_price = e
-    end
+    { type = "checkbox",
+      name = WW.Str("lam_lib_price_title"),
+      tooltip = WW.Str("lam_lib_price_desc"),
+      getFunc = function() return self.savedVariables.enable_lib_price end,
+      setFunc = function(e) self.savedVariables.enable_lib_price = e end,
     },
 
-    { type = "checkbox"
-    , name = WW.Str("lam_mm_fallback_title")
-    , tooltip = WW.Str("lam_mm_fallback_desc")
-    , getFunc = function()
-      return self.savedVariables.enable_mm_fallback
-    end
-    , setFunc = function(e)
-      self.savedVariables.enable_mm_fallback = e
-    end
+    { type = "checkbox",
+      name = WW.Str("lam_mm_fallback_title"),
+      tooltip = WW.Str("lam_mm_fallback_desc"),
+      getFunc = function() return self.savedVariables.enable_mm_fallback end,
+      setFunc = function(e) self.savedVariables.enable_mm_fallback = e end,
     },
 
-    { type = "checkbox"
-    , name = WW.Str("lam_station_colors_title")
-    , tooltip = WW.Str("lam_station_colors_desc")
-    , getFunc = function()
-      return self.savedVariables.enable_station_colors
-    end
-    , setFunc = function(e)
-      self.savedVariables.enable_station_colors = e
-    end
+    { type = "checkbox",
+      name = WW.Str("lam_station_colors_title"),
+      tooltip = WW.Str("lam_station_colors_desc"),
+      getFunc = function() return self.savedVariables.enable_station_colors end,
+      setFunc = function(e) self.savedVariables.enable_station_colors = e end,
     },
 
-    { type = "checkbox"
-    , name = WW.Str("lam_banked_vouchers_title")
-    , tooltip = WW.Str("lam_banked_vouchers_desc")
-    , getFunc = function()
-      return self.savedVariables.enable_banked_vouchers
-    end
-    , setFunc = function(e)
-      self.savedVariables.enable_banked_vouchers = e
-    end
+    { type = "checkbox",
+      name = WW.Str("lam_banked_vouchers_title"),
+      tooltip = WW.Str("lam_banked_vouchers_desc"),
+      getFunc = function() return self.savedVariables.enable_banked_vouchers end,
+      setFunc = function(e) self.savedVariables.enable_banked_vouchers = e end,
     },
 
-    { type = "checkbox"
-    , name = WW.Str("lam_force_en_title")
-    , tooltip = WW.Str("lam_force_en_desc")
-    , getFunc = function()
-      return self.savedVariables.lang == "en"
-    end
-    , setFunc = function(e)
-      self.savedVariables.lang = e and "en"
-    end
-    , requiresReload = true
+    { type = "checkbox",
+      name = WW.Str("lam_force_en_title"),
+      tooltip = WW.Str("lam_force_en_desc"),
+      getFunc = function() return self.savedVariables.lang == "en" end,
+      setFunc = function(e) self.savedVariables.lang = e and "en" end,
+      requiresReload = true,
     },
 
-    { type = "dropdown"
-    , name = WW.Str("lam_mat_tooltip_title")
-    , tooltip = WW.Str("lam_mat_tooltip_desc")
-    , choices = { WW.Str("lam_mat_tooltip_off")
-    , WW.Str("lam_mat_tooltip_all")
-    , WW.Str("lam_mat_tooltip_missing_only")
-    }
-    , getFunc = function()
-      return self.savedVariables.enable_mat_list_tooltip or WW.Str("lam_mat_tooltip_missing_only")
-    end
-    , setFunc = function(e)
-      self.savedVariables.enable_mat_list_tooltip = e
-    end
+    { type = "dropdown",
+      name = WW.Str("lam_mat_tooltip_title"),
+      tooltip = WW.Str("lam_mat_tooltip_desc"),
+      choices = { WW.Str("lam_mat_tooltip_off"),
+                  WW.Str("lam_mat_tooltip_all"),
+                  WW.Str("lam_mat_tooltip_missing_only")
+      },
+      getFunc = function() return self.savedVariables.enable_mat_list_tooltip or WW.Str("lam_mat_tooltip_missing_only") end,
+      setFunc = function(e) self.savedVariables.enable_mat_list_tooltip = e end,
     },
 
   }
