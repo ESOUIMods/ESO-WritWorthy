@@ -8,7 +8,7 @@ local WW = WritWorthy
 local LAM2 = LibAddonMenu2
 
 WritWorthy.name = "WritWorthy"
-WritWorthy.version = "7.3.4"
+WritWorthy.version = "7.3.5"
 WritWorthy.savedVarVersion = 1
 
 WritWorthy.default = {
@@ -478,74 +478,99 @@ function WritWorthy:CreateSettingsWindow()
     registerForRefresh = false,
     registerForDefaults = false,
   }
-  local cntrlOptionsPanel = LAM2:RegisterAddonPanel(lam_addon_id, panelData)
-  local optionsData = {
-    { type = "checkbox",
-      name = WW.Str("lam_mat_price_tt_title"),
-      tooltip = WW.Str("lam_mat_price_tt_desc"),
-      getFunc = function() return self.savedVariables.enable_mat_price_tooltip ~= false end,
-      setFunc = function(e) self.savedVariables.enable_mat_price_tooltip = e end,
-    },
 
-    { type = "dropdown",
-      name = WW.Str("lam_mat_list_title"),
-      tooltip = WW.Str("lam_mat_list_desc"),
-      choices = { WW.Str("lam_mat_list_off"),
-                  WW.Str("lam_mat_list_all"),
-                  WW.Str("lam_mat_list_alchemy_only")
-      },
-      getFunc = function() return self.savedVariables.enable_mat_list_chat end,
-      setFunc = function(e) self.savedVariables.enable_mat_list_chat = e end,
-    },
-
-    { type = "checkbox",
-      name = WW.Str("lam_lib_price_title"),
-      tooltip = WW.Str("lam_lib_price_desc"),
-      getFunc = function() return self.savedVariables.enable_lib_price end,
-      setFunc = function(e) self.savedVariables.enable_lib_price = e end,
-    },
-
-    { type = "checkbox",
-      name = WW.Str("lam_mm_fallback_title"),
-      tooltip = WW.Str("lam_mm_fallback_desc"),
-      getFunc = function() return self.savedVariables.enable_mm_fallback end,
-      setFunc = function(e) self.savedVariables.enable_mm_fallback = e end,
-    },
-
-    { type = "checkbox",
-      name = WW.Str("lam_station_colors_title"),
-      tooltip = WW.Str("lam_station_colors_desc"),
-      getFunc = function() return self.savedVariables.enable_station_colors end,
-      setFunc = function(e) self.savedVariables.enable_station_colors = e end,
-    },
-
-    { type = "checkbox",
-      name = WW.Str("lam_banked_vouchers_title"),
-      tooltip = WW.Str("lam_banked_vouchers_desc"),
-      getFunc = function() return self.savedVariables.enable_banked_vouchers end,
-      setFunc = function(e) self.savedVariables.enable_banked_vouchers = e end,
-    },
-
-    { type = "checkbox",
-      name = WW.Str("lam_force_en_title"),
-      tooltip = WW.Str("lam_force_en_desc"),
-      getFunc = function() return self.savedVariables.lang == "en" end,
-      setFunc = function(e) self.savedVariables.lang = e and "en" end,
-      requiresReload = true,
-    },
-
-    { type = "dropdown",
-      name = WW.Str("lam_mat_tooltip_title"),
-      tooltip = WW.Str("lam_mat_tooltip_desc"),
-      choices = { WW.Str("lam_mat_tooltip_off"),
-                  WW.Str("lam_mat_tooltip_all"),
-                  WW.Str("lam_mat_tooltip_missing_only")
-      },
-      getFunc = function() return self.savedVariables.enable_mat_list_tooltip or WW.Str("lam_mat_tooltip_missing_only") end,
-      setFunc = function(e) self.savedVariables.enable_mat_list_tooltip = e end,
-    },
-
+  local optionsData = {}
+  optionsData[#optionsData + 1] = {
+    type = "checkbox",
+    name = WW.Str("lam_mat_price_tt_title"),
+    tooltip = WW.Str("lam_mat_price_tt_desc"),
+    getFunc = function() return self.savedVariables.enable_mat_price_tooltip ~= false end,
+    setFunc = function(e) self.savedVariables.enable_mat_price_tooltip = e end,
   }
+
+  optionsData[#optionsData + 1] = {
+    type = "dropdown",
+    name = WW.Str("lam_mat_list_title"),
+    tooltip = WW.Str("lam_mat_list_desc"),
+    choices = { WW.Str("lam_mat_list_off"),
+                WW.Str("lam_mat_list_all"),
+                WW.Str("lam_mat_list_alchemy_only")
+    },
+    getFunc = function() return self.savedVariables.enable_mat_list_chat end,
+    setFunc = function(e) self.savedVariables.enable_mat_list_chat = e end,
+  }
+
+  optionsData[#optionsData + 1] = {
+    type = "checkbox",
+    name = WW.Str("lam_lib_price_title"),
+    tooltip = WW.Str("lam_lib_price_desc"),
+    getFunc = function() return self.savedVariables.enable_lib_price end,
+    setFunc = function(e) self.savedVariables.enable_lib_price = e end,
+  }
+
+  optionsData[#optionsData + 1] = {
+    type = "checkbox",
+    name = WW.Str("lam_mm_fallback_title"),
+    tooltip = WW.Str("lam_mm_fallback_desc"),
+    getFunc = function() return self.savedVariables.enable_mm_fallback end,
+    setFunc = function(e) self.savedVariables.enable_mm_fallback = e end,
+  }
+
+  optionsData[#optionsData + 1] = {
+    type = "checkbox",
+    name = WW.Str("lam_station_colors_title"),
+    tooltip = WW.Str("lam_station_colors_desc"),
+    getFunc = function() return self.savedVariables.enable_station_colors end,
+    setFunc = function(e) self.savedVariables.enable_station_colors = e end,
+  }
+
+  optionsData[#optionsData + 1] = {
+    type = "checkbox",
+    name = WW.Str("lam_banked_vouchers_title"),
+    tooltip = WW.Str("lam_banked_vouchers_desc"),
+    getFunc = function() return self.savedVariables.enable_banked_vouchers end,
+    setFunc = function(e) self.savedVariables.enable_banked_vouchers = e end,
+  }
+
+  optionsData[#optionsData + 1] = {
+    type = "checkbox",
+    name = WW.Str("lam_force_en_title"),
+    tooltip = WW.Str("lam_force_en_desc"),
+    getFunc = function() return self.savedVariables.lang == "en" end,
+    setFunc = function(e) self.savedVariables.lang = e and "en" end,
+    requiresReload = true,
+  }
+
+  optionsData[#optionsData + 1] = {
+    type = "dropdown",
+    name = WW.Str("lam_mat_tooltip_title"),
+    tooltip = WW.Str("lam_mat_tooltip_desc"),
+    choices = { WW.Str("lam_mat_tooltip_off"),
+                WW.Str("lam_mat_tooltip_all"),
+                WW.Str("lam_mat_tooltip_missing_only")
+    },
+    getFunc = function() return self.savedVariables.enable_mat_list_tooltip or WW.Str("lam_mat_tooltip_missing_only") end,
+    setFunc = function(e) self.savedVariables.enable_mat_list_tooltip = e end,
+  }
+
+  optionsData[#optionsData + 1] = {
+    type = "header",
+    name = WW.Str("header_reset_window_pos"),
+    width = "full",
+  }
+  optionsData[#optionsData + 1] = {
+    type = "button",
+    name = WW.Str("name_reset_window_pos"),
+    tooltip = WW.Str("tooltip_reset_window_pos"),
+    func = function()
+      WritWorthyUI:ClearAnchors()
+      WritWorthyUI:SetHidden(true)
+      WritWorthy.savedVariables["position"] = { [1] = 36, [2] = 73, [3] = 1161, [4] = 623, }
+      WritWorthyUI_ToggleUI()
+    end,
+  }
+
+
   -- Only show this checkbox if running Marify's
   -- Confirm Master Writ.
   if ConfirmMasterWrit then
@@ -562,6 +587,7 @@ function WritWorthy:CreateSettingsWindow()
     table.insert(optionsData, o)
   end
 
+  LAM2:RegisterAddonPanel(lam_addon_id, panelData)
   LAM2:RegisterOptionControls(lam_addon_id, optionsData)
 end
 

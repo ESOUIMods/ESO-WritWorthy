@@ -195,4 +195,7 @@ WritWorthy.I18N['static']['fr'] = {
 ,   ["tooltip_queued"                        ] = "En attente pour la fabrication"
 ,   ["tooltip_sell_for"                      ] = "à vendre pour %s O"
 ,   ["tooltip_sell_for_cannot"               ] = "Impossible de vendre pour %s O"
+,   ["header_reset_window_pos"               ] = "Reset window position"
+,   ["name_reset_window_pos"               ] = "Reset window position"
+,   ["tooltip_reset_window_pos"               ] = "Resets the window position."
 }

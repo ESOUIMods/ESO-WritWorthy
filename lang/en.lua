@@ -195,4 +195,7 @@ WritWorthy.I18N['static']['en'] = {
 ,   ["tooltip_queued"                        ] = "queued for crafting"
 ,   ["tooltip_sell_for"                      ] = "Sell for %s g"
 ,   ["tooltip_sell_for_cannot"               ] = "Cannot sell for %s g"
+,   ["header_reset_window_pos"               ] = "Reset window position"
+,   ["name_reset_window_pos"               ] = "Reset window position"
+,   ["tooltip_reset_window_pos"               ] = "Resets the window position."
 }

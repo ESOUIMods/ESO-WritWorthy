@@ -20,38 +20,6 @@ WritWorthy.I18N['shorten']['de'] = {
 ,   ["verringerten physischen schadens"      ] = "- phys. Schaden"
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 WritWorthy.I18N['static'] = WritWorthy.I18N['static'] or {}
 WritWorthy.I18N['static']['de'] = {
     ["ags_label"                             ] = "WritWorthy Kosten pro Schriebschein"
@@ -195,4 +163,7 @@ WritWorthy.I18N['static']['de'] = {
 ,   ["tooltip_queued"                        ] = "Zum Herstellen eingereiht"
 ,   ["tooltip_sell_for"                      ] = "Verkaufen für %s G"
 ,   ["tooltip_sell_for_cannot"               ] = "Kann nicht für %s G verkauft werden"
+,   ["header_reset_window_pos"               ] = "Reset window position"
+,   ["name_reset_window_pos"               ] = "Reset window position"
+,   ["tooltip_reset_window_pos"               ] = "Resets the window position."
 }

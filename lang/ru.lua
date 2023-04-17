@@ -195,4 +195,7 @@ WritWorthy.I18N['static']['ru'] = {
 ,   ["tooltip_queued"                        ] = "в очереди на изготовление"
 ,   ["tooltip_sell_for"                      ] = "Продать за %s з"
 ,   ["tooltip_sell_for_cannot"               ] = "Не может продать за %s з"
+,   ["header_reset_window_pos"               ] = "Reset window position"
+,   ["name_reset_window_pos"               ] = "Reset window position"
+,   ["tooltip_reset_window_pos"               ] = "Resets the window position."
 }
