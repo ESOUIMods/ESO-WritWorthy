@@ -528,7 +528,7 @@ function Parser:GetSetBonus(set_id)
     end
                         -- Force set name to I18N name, in case user
                         -- wants EN names on a DE client.
-    r.name = WritWorthy.SetName(set_id) or r.name
+    r.name = LibSets.GetSetName(set_id, WritWorthy.savedVariables.lang) or r.name
 
                         -- Remember the set_id because it's helpful elsewhere.
     if not r.set_id then
