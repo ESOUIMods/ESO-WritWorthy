@@ -8,7 +8,7 @@ local WW = WritWorthy
 local LAM2 = LibAddonMenu2
 
 WritWorthy.name = "WritWorthy"
-WritWorthy.version = "7.4.1"
+WritWorthy.version = "7.4.2"
 WritWorthy.savedVarVersion = 1
 
 WritWorthy.default = {
@@ -627,7 +627,7 @@ end
 
 function WritWorthy.Port()
   local owner = "@ziggr"
-  local house_id = 62     -- Grand Psijic Villa
+  local house_id = 46      -- Grand Psijic Villa
   if WritWorthy.ServerName() == "NA" then
 
   else
