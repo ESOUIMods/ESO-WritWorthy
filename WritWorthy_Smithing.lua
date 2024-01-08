@@ -523,7 +523,7 @@ function Parser:GetSetBonus(set_id)
         else
             r.name      = string.format("Unknown Set %d", set_id)
             r.trait_ct  = 0
-            Log.Warn("LibSets lacks data for set_id:%d, using hardcoded: "..tostring(r.name))
+            Log.Warn("LibSets lacks data for set_id:%d, using hardcoded: "..tostring(r.name), set_id)
         end
     end
                         -- Force set name to I18N name, in case user
@@ -927,6 +927,7 @@ function Smithing.ScanMotifs()
         local achieve_subcat0_ct = cat_info[3]
         local subcat_ct  = cat_info[2]
         local achieve_ct = 0
+        local subcat_ii
         for subcat_i = 0,subcat_ct do
             subcat_ii = subcat_i
             if subcat_i == 0 then

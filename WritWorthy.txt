@@ -1,13 +1,13 @@
-## Title: WritWorthy 7.4.0
-## Version: 7.4.0
-## AddOnVersion: 070400
+## Title: WritWorthy 7.4.1
+## Version: 7.4.1
+## AddOnVersion: 070401
 ## Last Updated: 2023-09-18
 ## APIVersion: 101039 101040
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
 ## Contributors: Dolgubon Friday-The13-rus
 ## SavedVariables: WritWorthyVars
-## DependsOn: LibAddonMenu-2.0>=34 LibPrice>=70410 LibLazyCrafting>=3086 LibSets>=000601 LibCharacterKnowledge>=20
+## DependsOn: LibAddonMenu-2.0>=35 LibPrice>=70410 LibLazyCrafting>=3086 LibSets>=000602 LibCharacterKnowledge>=21
 ## OptionalDependsOn: LibCustomMenu AwesomeGuildStore LibSlashCommander LibDebugLogger HomeStationMarker
 
 # Gamepad UI tooltip hook added by Friday-The13-rus
@@ -16,7 +16,7 @@
 # RU translation by ivann339 2019-09-06 2020-10-16
 # FR translation by JAKEZ31  2020-08-27 2021-01-05
 
-            # LibAddonMenu-2.0>=34  required
+            # LibAddonMenu-2.0>=35  required
             #   by Seerah, sirinsidiator
             #       https://www.esoui.com/downloads/info7-LibAddonMenu.html
             #       https://github.com/sirinsidiator/ESO-LibAddonMenu
