@@ -1108,7 +1108,7 @@ function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
 
                         -- Upate UI to display new "completed" state that we
                         -- just recorded.
-    inventory_data = self:UniqueIDToInventoryData(unique_id)
+    local inventory_data = self:UniqueIDToInventoryData(unique_id)
     if inventory_data then
         self:UpdateUISoon(inventory_data)
         self:HSMDeleteMark(inventory_data)
@@ -1505,10 +1505,9 @@ end
 
 -- Reload the LibLazyCrafting queue from savedChariables
 function WritWorthyInventoryList.RestoreFromSavedChariables()
-                        -- Do nothing if nothing to restore.
-    savedChariables = WritWorthy.savedChariables
-    if not (    savedChariables
-            and savedChariables.writ_unique_id) then
+    -- Do nothing if nothing to restore.
+    local savedChariables = WritWorthy.savedChariables
+    if not (savedChariables and savedChariables.writ_unique_id) then
         return
     end
 

@@ -47,7 +47,7 @@ end
 
 function Know:TooltipText()
     if self.is_known then return nil end
-    color = WritWorthy.Util.COLOR_RED
+    local color = WritWorthy.Util.COLOR_RED
     if self.is_warn then color = WritWorthy.Util.COLOR_ORANGE end
     return WritWorthy.Util.color(color, self.lack_msg)
 end

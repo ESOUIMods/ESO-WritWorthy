@@ -475,7 +475,7 @@ function WritWorthy.MatUI:BuildMasterlist()
 
                         -- Accumulate all queued writs' materials
                         -- into a single, summed, table.
-    mat_table = {} -- index = mat item_link, value = summed MatRow
+    local mat_table = {} -- index = mat item_link, value = summed MatRow
     self.inventory_data_list = WritWorthy:ScanInventoryForMasterWrits()
     for _, inventory_data in pairs(self.inventory_data_list) do
         local is_queued    = WritWorthyInventoryList:IsQueued(inventory_data)

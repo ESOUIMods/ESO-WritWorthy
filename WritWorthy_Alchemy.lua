@@ -262,7 +262,7 @@ function Alchemy.ToReagentThreeList(effect1, effect2, effect3)
                                    , reagent3.name
                                    }
                     table.sort(rnames)
-                    rkey = rnames[1] .."+".. rnames[2] .."+".. rnames[3]
+                    local rkey = rnames[1] .."+".. rnames[2] .."+".. rnames[3]
                     if not seen[rkey] then
                         seen[rkey] = true
                         if Alchemy.Winner( effect1,  effect2,  effect3
