@@ -308,7 +308,7 @@ Smithing.GOLD = {
 Smithing.GREEN_JEWELRY = {
     index          = 2
 ,   name           = WritWorthy.COLORIZED_QUALITY[2]
-,   green_mat_ct   = 1
+,   green_mat_ct   = 2
 ,   blue_mat_ct    = 0
 ,   purple_mat_ct  = 0
 ,   gold_mat_ct    = 0
@@ -317,8 +317,8 @@ Smithing.GREEN_JEWELRY = {
 Smithing.BLUE_JEWELRY = {
     index          = 3
 ,   name           = WritWorthy.COLORIZED_QUALITY[3]
-,   green_mat_ct   = 1
-,   blue_mat_ct    = 2
+,   green_mat_ct   = 2
+,   blue_mat_ct    = 3
 ,   purple_mat_ct  = 0
 ,   gold_mat_ct    = 0
 }
@@ -326,19 +326,19 @@ Smithing.BLUE_JEWELRY = {
 Smithing.PURPLE_JEWELRY = {
     index          = 4
 ,   name           = WritWorthy.COLORIZED_QUALITY[4]
-,   green_mat_ct   = 1
-,   blue_mat_ct    = 2
-,   purple_mat_ct  = 3
+,   green_mat_ct   = 2
+,   blue_mat_ct    = 3
+,   purple_mat_ct  = 4
 ,   gold_mat_ct    = 0
 }
 
 Smithing.GOLD_JEWELRY = {
     index          = 5
 ,   name           = WritWorthy.COLORIZED_QUALITY[5]
-,   green_mat_ct   = 1
-,   blue_mat_ct    = 2
-,   purple_mat_ct  = 3
-,   gold_mat_ct    = 4
+,   green_mat_ct   = 2
+,   blue_mat_ct    = 3
+,   purple_mat_ct  = 4
+,   gold_mat_ct    = 8
 }
 
 -- indices are item_link writ3 numbers (1-3 are white..blue, not used here)
