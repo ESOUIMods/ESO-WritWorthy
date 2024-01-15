@@ -1191,13 +1191,11 @@ function WritWorthyInventoryList:GetLLC()
     for k,v in pairs(self.LibLazyCrafting) do
         Log:Add("LibLazyCrafting API k:"..tostring(k).."  v:"..tostring(v))
     end
-
                         -- Install our custom pre-crafting hooks.
                         -- These write "insufficient materials" errors to chat
                         -- when LLC cannot craft an item due to missing mats.
     local llc_global = LibLazyCrafting
-    if      llc_global
-        and llc_global.craftInteractionTables then
+    if llc_global and llc_global.craftInteractionTables then
         self.llc_orig_is_item_craftable = {}
         for ctype,v in ipairs(llc_global.craftInteractionTables) do
                         -- First, save original interaction function so that
@@ -1269,12 +1267,18 @@ local function HaveMaterials(mat_list)
 end
 
 function WritWorthy_LLC_IsItemCraftable(self, station_crafting_type, request)
+    -- This is a furniture/food request, and regardless of station it should be using the provisioning isCraftable
+    self = WritWorthyInventoryList.singleton
+    if request.recipeIndex and station ~= CRAFTING_TYPE_PROVISIONING then 
+        return self.llc_orig_is_item_craftable[CRAFTING_TYPE_PROVISIONING](self, station_crafting_type, request) 
+    end
                         -- First ask LLC's original "can this request be
                         -- crafted right now?" function. If LLC says yes, then
                         -- there won't be any reason to write a missing
                         -- material error to chat.
-    self = WritWorthyInventoryList.singleton
+    
     local orig = self.llc_orig_is_item_craftable[station_crafting_type]
+
     local orig_can_craft = orig and orig(self, station_crafting_type, request)
     if orig_can_craft then return orig_can_craft end
 
