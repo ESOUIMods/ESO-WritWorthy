@@ -8,7 +8,7 @@ local WW = WritWorthy
 local LAM2 = LibAddonMenu2
 
 WritWorthy.name = "WritWorthy"
-WritWorthy.version = "7.4.4"
+WritWorthy.version = "7.4.5"
 WritWorthy.savedVarVersion = 1
 
 WritWorthy.default = {
@@ -470,7 +470,7 @@ function WritWorthy:CreateSettingsWindow()
     type = "panel",
     name = self.name,
     displayName = self.name,
-    author = "ziggr",
+    author = "ziggr, Dolgubon, Friday-The13-rus, Sharlikran",
     version = self.version,
     website = "https://www.esoui.com/downloads/info1605-WritWorthy.html",
     feedback = "https://www.esoui.com/downloads/info1605-WritWorthy.html",
