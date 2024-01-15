@@ -1274,6 +1274,18 @@ function WritWorthy_LLC_IsItemCraftable(self, station_crafting_type, request)
   self = WritWorthyInventoryList.singleton
   local orig = self.llc_orig_is_item_craftable[station_crafting_type]
   local orig_can_craft = orig and orig(self, station_crafting_type, request)
+
+  -- if request.recipeIndex is nil then evaluation will be false
+  -- and subsequent conditions will be evaluated.
+  local isFurnatureRequest = request.recipeIndex and station_crafting_type ~= CRAFTING_TYPE_PROVISIONING
+  -- call self.llc_orig_is_item_craftable, or orig
+  -- but use CRAFTING_TYPE_PROVISIONING from the table
+  -- instead of station_crafting_type
+  local useProvisioning = self.llc_orig_is_item_craftable[CRAFTING_TYPE_PROVISIONING](self, station_crafting_type, request)
+  if isFurnatureRequest then
+    return useProvisioning
+  end
+
   if orig_can_craft then return orig_can_craft end
 
   -- Was this request one of ours? Don't run our
