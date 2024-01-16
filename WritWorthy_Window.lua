@@ -1267,24 +1267,23 @@ local function HaveMaterials(mat_list)
 end
 
 function WritWorthy_LLC_IsItemCraftable(self, station_crafting_type, request)
-  -- First ask LLC's original "can this request be
+  self = WritWorthyInventoryList.singleton
+  -- if request.recipeIndex is nil then evaluation will be false
+  -- and subsequent conditions will be evaluated.
+  local isFurnitureRequest = request.recipeIndex and station_crafting_type ~= CRAFTING_TYPE_PROVISIONING
+  if isFurnitureRequest then
+    -- call self.llc_orig_is_item_craftable, or orig
+    -- but use CRAFTING_TYPE_PROVISIONING from the table
+    -- instead of station_crafting_type
+    return self.llc_orig_is_item_craftable[CRAFTING_TYPE_PROVISIONING](self, station_crafting_type, request)
+  end
+
+  -- Ask LLC's original "can this request be
   -- crafted right now?" function. If LLC says yes, then
   -- there won't be any reason to write a missing
   -- material error to chat.
-  self = WritWorthyInventoryList.singleton
   local orig = self.llc_orig_is_item_craftable[station_crafting_type]
   local orig_can_craft = orig and orig(self, station_crafting_type, request)
-
-  -- if request.recipeIndex is nil then evaluation will be false
-  -- and subsequent conditions will be evaluated.
-  local isFurnatureRequest = request.recipeIndex and station_crafting_type ~= CRAFTING_TYPE_PROVISIONING
-  -- call self.llc_orig_is_item_craftable, or orig
-  -- but use CRAFTING_TYPE_PROVISIONING from the table
-  -- instead of station_crafting_type
-  local useProvisioning = self.llc_orig_is_item_craftable[CRAFTING_TYPE_PROVISIONING](self, station_crafting_type, request)
-  if isFurnatureRequest then
-    return useProvisioning
-  end
 
   if orig_can_craft then return orig_can_craft end
 
