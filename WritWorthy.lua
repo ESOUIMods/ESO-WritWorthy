@@ -8,7 +8,7 @@ local WW = WritWorthy
 local LAM2 = LibAddonMenu2
 
 WritWorthy.name = "WritWorthy"
-WritWorthy.version = "7.4.8"
+WritWorthy.version = "7.4.9"
 WritWorthy.savedVarVersion = 1
 
 WritWorthy.default = {
@@ -653,16 +653,17 @@ function WritWorthy.Port()
 end
 
 function WritWorthy.SlashCommand(arg1)
-  if arg1:lower() == WW.Str("slash_discover") then
+  arg1 = arg1:lower() -- Normalize input to lowercase
+  if arg1 == WW.Str("slash_discover"):lower() then
     d("|c999999WritWorthy: " .. WW.Str("status_discover") .. "|r")
     WritWorthy.Smithing.Discover()
     WritWorthy.DiscoverI18N()
-  elseif arg1:lower() == WW.Str("slash_forget") then
+  elseif arg1 == WW.Str("slash_forget"):lower() then
     d("|c999999WritWorthy: " .. WW.Str("status_forget") .. "|r")
     WritWorthy.Forget()
-  elseif arg1:lower() == WW.Str("slash_port") then
+  elseif arg1 == WW.Str("slash_port"):lower() then
     WritWorthy.Port()
-  elseif arg1:lower() == WW.Str("slash_count") then
+  elseif arg1 == WW.Str("slash_count"):lower() then
     local mwlist = WritWorthy:ScanInventoryForMasterWrits()
     local mw_ct = #mwlist
     local voucher_ct = 0
@@ -670,22 +671,20 @@ function WritWorthy.SlashCommand(arg1)
       local vc = WritWorthy.ToVoucherCount(mw.item_link)
       voucher_ct = voucher_ct + vc
     end
-    d(string.format("|c999999WritWorthy: " .. WW.Str("count_writs_vouchers") .. "|r"
-    , mw_ct
-    , Util.ToMoney(voucher_ct)
+    d(string.format("|c999999WritWorthy: " .. WW.Str("count_writs_vouchers") .. "|r",
+      mw_ct,
+      Util.ToMoney(voucher_ct)
     ))
-  elseif arg1:lower() == WW.Str("slash_auto") then
+  elseif arg1 == WW.Str("slash_auto"):lower() then
     if WritWorthy_AutoQuest then
       WritWorthy_AutoQuest()
     end
-  elseif arg1:lower() == WW.Str("slash_mat") then
-    -- Lazy init of list window
+  elseif arg1 == WW.Str("slash_mat"):lower() then
     if not WritWorthy.mat_ui_inited then
       WritWorthy.MatUI:LazyInit()
       WritWorthy.mat_ui_inited = true
       WritWorthy.MatUI.RestorePos()
     end
-
     if WritWorthy.MatUI then
       WritWorthy.MatUI.ToggleUI()
     end
