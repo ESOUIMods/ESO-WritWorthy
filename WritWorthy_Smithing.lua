@@ -127,8 +127,8 @@ Smithing.SCHOOL_JEWELRY = {
 ,   motif_required      = false
 ,   autocraft_not_implemented = true
     -- research lines
-,   RING                =  2
-,   NECKLACE            =  1
+,   RING                =  1
+,   NECKLACE            =  2
 }
 
 -- Traits --------------------------------------------------------------------
