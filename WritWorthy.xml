@@ -101,7 +101,7 @@
           </OnClicked>
 				</Button>
 				<Control name="$(parent)MaxGPV">
-					<Dimensions width="200"/>
+					<Dimensions x="200"/>
 					<Anchor point="RIGHT"
 					        relativeTo="$(parent)SortByStation"
 					        relativePoint="LEFT"
