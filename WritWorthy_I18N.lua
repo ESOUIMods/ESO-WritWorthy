@@ -288,7 +288,7 @@ function WritWorthy.DiscoverI18N()
   for set_id = 1, 1000 do
     local set_info = WritWorthy.LibSets() and WritWorthy.LibSets().GetSetInfo(set_id)
     if set_info and set_info.setTypes and set_info.setTypes.isCrafted then
-      rr[lang][set_id] = set_info.names[lang]
+      rr[lang][set_id] = set_info.setNames[lang]
       ct = ct + 1
     end
   end
