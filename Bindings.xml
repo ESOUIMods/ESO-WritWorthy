@@ -6,7 +6,6 @@
             </Action>
         </Category>
     </Layer>
-
     <Layer name="SI_KEYBINDINGS_LAYER_USER_INTERFACE_SHORTCUTS">
         <Category name="SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY">
             <Action name="WRIT_WORTHY_ACCEPT_QUESTS" rebindable="true">
@@ -14,5 +13,4 @@
             </Action>
         </Category>
     </Layer>
-
 </Bindings>

@@ -3,7 +3,7 @@
 -- Do NOT put tooltip or settings UI code here. Just the big list-of-writs
 -- window.
 
-local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
+local WritWorthy = _G["WritWorthy"] -- defined in WritWorthy_Define.lua
 local WW = WritWorthy
 WritWorthyInventoryList = ZO_SortFilterList:Subclass()
 -- Inherits field "self.list" which is the scroll list control.
@@ -53,18 +53,18 @@ local TYPE_ID = 1
 local CRAFTING_TYPE_JEWELRYCRAFTING = CRAFTING_TYPE_JEWELRYCRAFTING or 7
 
 WritWorthyInventoryList.SORT_KEYS = {
-  ["ui_type"] = { tiebreaker = "ui_voucher_ct" }
-, ["ui_voucher_ct"] = { tiebreaker = "ui_detail1", isNumeric = true }
-, ["ui_detail1"] = { tiebreaker = "ui_detail2" }
-, ["ui_detail2"] = { tiebreaker = "ui_detail3" }
-, ["ui_detail3"] = { tiebreaker = "ui_detail4" }
-, ["ui_detail4"] = { tiebreaker = "ui_detail5" }
-, ["ui_detail5"] = { tiebreaker = "ui_is_queued" }
-, ["ui_is_queued"] = { tiebreaker = "ui_use_mimic" }
-, ["ui_use_mimic"] = { tiebreaker = "ui_can_queue" }
+  ["ui_type"] = { tiebreaker = "ui_voucher_ct" },
+  ["ui_voucher_ct"] = { tiebreaker = "ui_detail1", isNumeric = true },
+  ["ui_detail1"] = { tiebreaker = "ui_detail2" },
+  ["ui_detail2"] = { tiebreaker = "ui_detail3" },
+  ["ui_detail3"] = { tiebreaker = "ui_detail4" },
+  ["ui_detail4"] = { tiebreaker = "ui_detail5" },
+  ["ui_detail5"] = { tiebreaker = "ui_is_queued" },
+  ["ui_is_queued"] = { tiebreaker = "ui_use_mimic" },
+  ["ui_use_mimic"] = { tiebreaker = "ui_can_queue" },
   -- Not visible columns, but still affect sort.
-, ["ui_can_queue"] = {}
-, ["ui_station_sort"] = { tiebreaker = "ui_voucher_ct" }
+  ["ui_can_queue"] = {},
+  ["ui_station_sort"] = { tiebreaker = "ui_voucher_ct" }
 }
 
 WritWorthyInventoryList.ROW_HEIGHT = 30
@@ -95,20 +95,20 @@ WritWorthyInventoryList.CELL_ENQUEUE = "Enqueue"
 WritWorthyInventoryList.CELL_MIMIC = "Mimic"
 WritWorthyInventoryList.CELL_ENQUEUE_MASK = "EnqueueMask" -- not a cell on its own.
 WritWorthyInventoryList.CELL_NAME_LIST = {
-  WritWorthyInventoryList.CELL_TYPE
-, WritWorthyInventoryList.CELL_VOUCHERCT
-, WritWorthyInventoryList.CELL_DETAIL1
-, WritWorthyInventoryList.CELL_DETAIL2
-, WritWorthyInventoryList.CELL_DETAIL3
-, WritWorthyInventoryList.CELL_DETAIL4
-, WritWorthyInventoryList.CELL_DETAIL5
-, WritWorthyInventoryList.CELL_ENQUEUE
-, WritWorthyInventoryList.CELL_MIMIC
+  WritWorthyInventoryList.CELL_TYPE,
+  WritWorthyInventoryList.CELL_VOUCHERCT,
+  WritWorthyInventoryList.CELL_DETAIL1,
+  WritWorthyInventoryList.CELL_DETAIL2,
+  WritWorthyInventoryList.CELL_DETAIL3,
+  WritWorthyInventoryList.CELL_DETAIL4,
+  WritWorthyInventoryList.CELL_DETAIL5,
+  WritWorthyInventoryList.CELL_ENQUEUE,
+  WritWorthyInventoryList.CELL_MIMIC
 }
 -- Cells that are shown/hidden click buttons, not text data.
 WritWorthyInventoryList.CELL_UNTEXT_LIST = {
-  [WritWorthyInventoryList.CELL_ENQUEUE] = true
-, [WritWorthyInventoryList.CELL_MIMIC] = true
+  [WritWorthyInventoryList.CELL_ENQUEUE] = true,
+  [WritWorthyInventoryList.CELL_MIMIC] = true
 }
 
 -- WritWorthyUI: The window around the inventory list ------------------------
@@ -127,10 +127,7 @@ function WritWorthyUI_OnMoveStop()
 end
 
 function WritWorthyUI_OnResizeStop()
-  Util.OnResizeStop(WritWorthyUI
-  , WritWorthy.InventoryList
-  , WritWorthyInventoryList.singleton
-  , "position")
+  Util.OnResizeStop(WritWorthyUI, WritWorthy.InventoryList, WritWorthyInventoryList.singleton, "position")
 end
 
 function WritWorthyUI_ToggleUI()
@@ -143,7 +140,6 @@ function WritWorthyUI_ToggleUI()
     WritWorthyUI_RestorePos()
     local t = WritWorthyUIInventoryListTitle
     if t then
-
       local fmt = WW.Str("title_writ_inventory_player")
       if WritWorthy.savedVariables.enable_banked_vouchers then
         fmt = WW.Str("title_writ_inventory_player_bank")
@@ -202,13 +198,14 @@ end
 
 function WritWorthyInventoryList_HeaderInit(control, name, text, key)
   local l10n_text = WW.Str("header_" .. text) or text
-  ZO_SortHeader_Initialize(control                   -- control
-  , l10n_text                 -- name
-  , key or string.lower(text) -- key
-  , ZO_SORT_ORDER_DOWN        -- initialDirection
-  , align or TEXT_ALIGN_LEFT  -- alignment
-  , "ZoFontWinT1"             -- font
-  , nil                       -- highlightTemplate
+  ZO_SortHeader_Initialize(
+    control, -- control
+    l10n_text, -- name
+    key or string.lower(text), -- key
+    ZO_SORT_ORDER_DOWN, -- initialDirection
+    align or TEXT_ALIGN_LEFT, -- alignment
+    "ZoFontWinT1", -- font
+    nil -- highlightTemplate
   )
 
   -- Remember this control!
@@ -224,15 +221,15 @@ function WritWorthyInventoryList_HeaderInit(control, name, text, key)
   WritWorthyInventoryList.list_header_controls[name] = control
 
   WritWorthyInventoryList.HEADER_TOOLTIPS = {
-    [WritWorthyInventoryList.CELL_TYPE] = WW.Str("header_tooltip_Type")
-  , [WritWorthyInventoryList.CELL_VOUCHERCT] = WW.Str("header_tooltip_V")
-  , [WritWorthyInventoryList.CELL_DETAIL1] = WW.Str("header_tooltip_Detail1")
-  , [WritWorthyInventoryList.CELL_DETAIL2] = WW.Str("header_tooltip_Detail2")
-  , [WritWorthyInventoryList.CELL_DETAIL3] = WW.Str("header_tooltip_Detail3")
-  , [WritWorthyInventoryList.CELL_DETAIL4] = WW.Str("header_tooltip_Detail4")
-  , [WritWorthyInventoryList.CELL_DETAIL5] = WW.Str("header_tooltip_Detail5")
-  , [WritWorthyInventoryList.CELL_ENQUEUE] = WW.Str("header_tooltip_Q")
-  , [WritWorthyInventoryList.CELL_MIMIC] = WW.Str("header_tooltip_M")
+    [WritWorthyInventoryList.CELL_TYPE] = WW.Str("header_tooltip_Type"),
+    [WritWorthyInventoryList.CELL_VOUCHERCT] = WW.Str("header_tooltip_V"),
+    [WritWorthyInventoryList.CELL_DETAIL1] = WW.Str("header_tooltip_Detail1"),
+    [WritWorthyInventoryList.CELL_DETAIL2] = WW.Str("header_tooltip_Detail2"),
+    [WritWorthyInventoryList.CELL_DETAIL3] = WW.Str("header_tooltip_Detail3"),
+    [WritWorthyInventoryList.CELL_DETAIL4] = WW.Str("header_tooltip_Detail4"),
+    [WritWorthyInventoryList.CELL_DETAIL5] = WW.Str("header_tooltip_Detail5"),
+    [WritWorthyInventoryList.CELL_ENQUEUE] = WW.Str("header_tooltip_Q"),
+    [WritWorthyInventoryList.CELL_MIMIC] = WW.Str("header_tooltip_M")
   }
 
   local tooltip_text = WritWorthyInventoryList.HEADER_TOOLTIPS[name]
@@ -256,12 +253,12 @@ function WritWorthyInventoryList:Initialize(control)
   -- Tell ZO_ScrollList how it can ask us to
   -- create row controls.
   ZO_ScrollList_AddDataType(
-    self.list                     -- scroll list control
-  , TYPE_ID                       -- row data type ID
-  , "WritWorthyInventoryListRow"  -- template: virtual button defined in XML
-  , self.ROW_HEIGHT               -- row height
+    self.list, -- scroll list control
+    TYPE_ID, -- row data type ID
+    "WritWorthyInventoryListRow", -- template: virtual button defined in XML
+    self.ROW_HEIGHT, -- row height
   -- setupCallback
-  , function(control, inventory_data)
+    function(control, inventory_data)
       self:SetupRowControl(control, inventory_data)
     end
   )
@@ -276,11 +273,12 @@ function WritWorthyInventoryList:Initialize(control)
   -- we just need to know how to find it and pass it to
   -- table.sort() from within FilterScrollList() below.
   self.sortFunction = function(row_a, row_b)
-    return ZO_TableOrderingFunction(row_a.data
-    , row_b.data
-    , self.currentSortKey
-    , WritWorthyInventoryList.SORT_KEYS
-    , self.currentSortOrder
+    return ZO_TableOrderingFunction(
+      row_a.data,
+      row_b.data,
+      self.currentSortKey,
+      WritWorthyInventoryList.SORT_KEYS,
+      self.currentSortOrder
     )
   end
   -- Set our initial sort key. Not sure this actually
@@ -294,47 +292,42 @@ function WritWorthyInventoryList:Initialize(control)
   ZO_SortHeader_OnMouseExit(WritWorthyUIInventoryListHeadersType)
   self:RefreshData()
 
-
   -- Create the summary grid at the bottom of the window.
   local OFFSET_X = { 0, 72, 100, 400, 400 + 72, 400 + 100, 800 }
   local OFFSET_Y = { 5, 30, 55, 80 }
-  local L = TEXT_ALIGN_LEFT       -- for a LOT less typing
+  local L = TEXT_ALIGN_LEFT -- for a LOT less typing
   local R = TEXT_ALIGN_RIGHT
 
   -- offsetX index into above table
   -- offsetY index into above table
   -- align
   -- text
-  local GRID = {                          --
-    ["SummaryQueuedWritCt"] = { 1, 1, R, "" }
-  , ["SummaryQueuedVoucherCt"] = { 1, 2, R, "" }
-  , ["SummaryQueuedMatCost"] = { 1, 3, R, "" }
-  , ["SummaryQueuedVoucherCost"] = { 1, 4, R, "" }
-
-  , ["SummaryQueuedWritCtUnit"] = { 2, 1, L, "" }
-  , ["SummaryQueuedVoucherCtUnit"] = { 2, 2, L, WW.Str("currency_suffix_voucher") }
-  , ["SummaryQueuedMatCostUnit"] = { 2, 3, L, WW.Str("currency_suffix_gold") }
-  , ["SummaryQueuedVoucherCostUnit"] = { 2, 4, L, WW.Str("currency_suffix_gold_per_voucher") }
-
-  , ["SummaryQueuedWritCtLabel"] = { 3, 1, L, WW.Str("summary_queued_writ_ct") }
-  , ["SummaryQueuedVoucherCtLabel"] = { 3, 2, L, WW.Str("summary_queued_voucher_ct") }
-  , ["SummaryQueuedMatCostLabel"] = { 3, 3, L, WW.Str("summary_queued_mat_cost") }
-  , ["SummaryQueuedVoucherCostLabel"] = { 3, 4, L, WW.Str("summary_queued_average_voucher_cost") }
-
-  , ["SummaryCompletedWritCt"] = { 4, 1, R, "" }
-  , ["SummaryCompletedVoucherCt"] = { 4, 2, R, "" }
-  , ["SummaryCompletedMatCost"] = { 4, 3, R, "" }
-  , ["SummaryCompletedVoucherCost"] = { 4, 4, R, "" }
-
-  , ["SummaryCompletedWritCtUnit"] = { 5, 1, L, "" }
-  , ["SummaryCompletedVoucherCtUnit"] = { 5, 2, L, WW.Str("currency_suffix_voucher") }
-  , ["SummaryCompletedMatCostUnit"] = { 5, 3, L, WW.Str("currency_suffix_gold") }
-  , ["SummaryCompletedVoucherCostUnit"] = { 5, 4, L, WW.Str("currency_suffix_gold_per_voucher") }
-
-  , ["SummaryCompletedWritCtLabel"] = { 6, 1, L, WW.Str("summary_completed_writ_ct") }
-  , ["SummaryCompletedVoucherCtLabel"] = { 6, 2, L, WW.Str("summary_completed_voucher_ct") }
-  , ["SummaryCompletedMatCostLabel"] = { 6, 3, L, WW.Str("summary_completed_mat_cost") }
-  , ["SummaryCompletedVoucherCostLabel"] = { 6, 4, L, WW.Str("summary_completed_average_voucher_cost") }
+  local GRID = {
+    --
+    ["SummaryQueuedWritCt"] = { 1, 1, R, "" },
+    ["SummaryQueuedVoucherCt"] = { 1, 2, R, "" },
+    ["SummaryQueuedMatCost"] = { 1, 3, R, "" },
+    ["SummaryQueuedVoucherCost"] = { 1, 4, R, "" },
+    ["SummaryQueuedWritCtUnit"] = { 2, 1, L, "" },
+    ["SummaryQueuedVoucherCtUnit"] = { 2, 2, L, WW.Str("currency_suffix_voucher") },
+    ["SummaryQueuedMatCostUnit"] = { 2, 3, L, WW.Str("currency_suffix_gold") },
+    ["SummaryQueuedVoucherCostUnit"] = { 2, 4, L, WW.Str("currency_suffix_gold_per_voucher") },
+    ["SummaryQueuedWritCtLabel"] = { 3, 1, L, WW.Str("summary_queued_writ_ct") },
+    ["SummaryQueuedVoucherCtLabel"] = { 3, 2, L, WW.Str("summary_queued_voucher_ct") },
+    ["SummaryQueuedMatCostLabel"] = { 3, 3, L, WW.Str("summary_queued_mat_cost") },
+    ["SummaryQueuedVoucherCostLabel"] = { 3, 4, L, WW.Str("summary_queued_average_voucher_cost") },
+    ["SummaryCompletedWritCt"] = { 4, 1, R, "" },
+    ["SummaryCompletedVoucherCt"] = { 4, 2, R, "" },
+    ["SummaryCompletedMatCost"] = { 4, 3, R, "" },
+    ["SummaryCompletedVoucherCost"] = { 4, 4, R, "" },
+    ["SummaryCompletedWritCtUnit"] = { 5, 1, L, "" },
+    ["SummaryCompletedVoucherCtUnit"] = { 5, 2, L, WW.Str("currency_suffix_voucher") },
+    ["SummaryCompletedMatCostUnit"] = { 5, 3, L, WW.Str("currency_suffix_gold") },
+    ["SummaryCompletedVoucherCostUnit"] = { 5, 4, L, WW.Str("currency_suffix_gold_per_voucher") },
+    ["SummaryCompletedWritCtLabel"] = { 6, 1, L, WW.Str("summary_completed_writ_ct") },
+    ["SummaryCompletedVoucherCtLabel"] = { 6, 2, L, WW.Str("summary_completed_voucher_ct") },
+    ["SummaryCompletedMatCostLabel"] = { 6, 3, L, WW.Str("summary_completed_mat_cost") },
+    ["SummaryCompletedVoucherCostLabel"] = { 6, 4, L, WW.Str("summary_completed_average_voucher_cost") }
   }
   for name, def in pairs(GRID) do
     local offset_x = OFFSET_X[def[1]]
@@ -354,14 +347,14 @@ function WritWorthyInventoryList:Initialize(control)
     control:SetWidth(width)
     control:SetText(text)
     control:ClearAnchors()
-    control:SetAnchor(TOPLEFT                      -- point
-    , WritWorthyUIInventoryList    -- relativeTo
-    , BOTTOMLEFT                   -- relativePoint
-    , offset_x                     -- offsetX
-    , offset_y                     -- offsetY
+    control:SetAnchor(
+      TOPLEFT, -- point
+      WritWorthyUIInventoryList, -- relativeTo
+      BOTTOMLEFT, -- relativePoint
+      offset_x, -- offsetX
+      offset_y -- offsetY
     )
   end
-
 end
 
 -- Collect data that we'll eventually use to fill the inventory list UI.
@@ -387,8 +380,7 @@ function WritWorthyInventoryList:FilterScrollList()
   local scroll_data = ZO_ScrollList_GetDataList(self.list)
   ZO_ClearNumericallyIndexedTable(scroll_data)
   for _, inventory_data in ipairs(self.inventory_data_list) do
-    table.insert(scroll_data
-    , ZO_ScrollList_CreateDataEntry(TYPE_ID, inventory_data))
+    table.insert(scroll_data, ZO_ScrollList_CreateDataEntry(TYPE_ID, inventory_data))
   end
 end
 
@@ -412,10 +404,7 @@ function WritWorthyInventoryList_Cell_OnMouseEnter(cell_control)
   -- text (same red text that WritWorthy stuffs
   -- into sealed writ tooltips).
   if cell_control.tooltip_text then
-    ZO_Tooltips_ShowTextTooltip(
-      cell_control
-    , TOP
-    , cell_control.tooltip_text)
+    ZO_Tooltips_ShowTextTooltip(cell_control, TOP, cell_control.tooltip_text)
   end
 end
 
@@ -424,9 +413,7 @@ function WritWorthyInventoryList_Cell_OnMouseExit(cell_control)
 end
 
 function WritWorthyInventoryList_Cell_OnMouseDown(cell_control)
-  if not (cell_control
-    and cell_control.inventory_data
-    and cell_control.inventory_data.item_link) then
+  if not (cell_control and cell_control.inventory_data and cell_control.inventory_data.item_link) then
     return
   end
   -- Inject this item's unique_id so that our
@@ -467,14 +454,11 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
     row_control[cell_name] = cell_control
 
     local y_offset = 0
-    if is_text then y_offset = 3 end
+    if is_text then
+      y_offset = 3
+    end
 
-    Util.SetAnchorCellLeft(row_control
-    , cell_control
-    , header_cell_control
-    , i == 1
-    , y_offset
-    , rel_to_left)
+    Util.SetAnchorCellLeft(row_control, cell_control, header_cell_control, i == 1, y_offset, rel_to_left)
     cell_control:SetHidden(false)
 
     if not is_text then
@@ -488,9 +472,7 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
       cell_control:SetFont("ZoFontGame")
       cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
 
-      Util.SetCellToHeaderAlign(row_control
-      , header_control
-      , self.list_header_controls[cell_name])
+      Util.SetCellToHeaderAlign(row_control, header_control, self.list_header_controls[cell_name])
 
       -- Click to toggle item tooltip for row's
       -- Sealed Master Writ.
@@ -501,16 +483,22 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
 
   local cb = row_control:GetNamedChild(self.CELL_MIMIC)
   if cb then
-    ZO_CheckButton_SetToggleFunction(cb, function(checkbox, is_checked)
-      WritWorthyInventoryList_MimicToggled(checkbox, is_checked)
-    end)
+    ZO_CheckButton_SetToggleFunction(
+      cb,
+      function(checkbox, is_checked)
+        WritWorthyInventoryList_MimicToggled(checkbox, is_checked)
+      end
+    )
   end
 
   cb = row_control:GetNamedChild(self.CELL_ENQUEUE)
   if cb then
-    ZO_CheckButton_SetToggleFunction(cb, function(checkbox, is_checked)
-      WritWorthyInventoryList_EnqueueToggled(checkbox, is_checked)
-    end)
+    ZO_CheckButton_SetToggleFunction(
+      cb,
+      function(checkbox, is_checked)
+        WritWorthyInventoryList_EnqueueToggled(checkbox, is_checked)
+      end
+    )
   end
   cb:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
   cb:SetHandler("OnMouseExit", WritWorthyInventoryList_Cell_OnMouseExit)
@@ -535,7 +523,9 @@ end
 function WritWorthyInventoryList:UpdateColumnWidths(row_control)
   -- Do nothing if we have not yet fully initialized.
   local hc = WritWorthyUIInventoryListHeadersType
-  if not hc then return end
+  if not hc then
+    return
+  end
   local rel_to_left = WritWorthyUIInventoryListHeaders:GetLeft()
 
   -- Cache header cell controls from which we'll
@@ -562,11 +552,13 @@ function WritWorthyInventoryList:UpdateColumnWidths(row_control)
       -- 7 AnchorConstrains anchorConstrains
       local a = { cell_control:GetAnchor(0) }
       if a and a[1] then
-        cell_control:SetAnchor(LEFT                -- point
-        , row_control         -- relativeTo
-        , LEFT                -- relativePoint
-        , offsetX             -- offsetX
-        , a[6])           -- offsetY
+        cell_control:SetAnchor(
+          LEFT, -- point
+          row_control, -- relativeTo
+          LEFT, -- relativePoint
+          offsetX, -- offsetX
+          a[6]
+        ) -- offsetY
       end
       -- Resize text cells, but leave button cells locked
       -- to whatever CreateRowControlCells() chose.
@@ -585,9 +577,13 @@ end
 -- Also applies purple/gold color to epic/legendary
 --
 function WritWorthyInventoryList.Shorten(text)
-  if not text then return "" end
+  if not text then
+    return ""
+  end
   local s = WritWorthy.Shorten(text)
-  if s then return s end
+  if s then
+    return s
+  end
   return text
 end
 
@@ -601,28 +597,26 @@ function WritWorthyInventoryList:IsQueued(inventory_data)
 end
 
 function WritWorthyInventoryList:IsUseMimic(inventory_data)
-  if not (inventory_data
-    and inventory_data.unique_id
-    and WritWorthy.savedChariables
-    and WritWorthy.savedChariables.writ_unique_id
-    and WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id]
-  ) then
+  if
+  not (inventory_data and inventory_data.unique_id and WritWorthy.savedChariables and
+    WritWorthy.savedChariables.writ_unique_id and
+    WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id])
+  then
     return false
   end
   return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id].use_mimic
 end
 
 function WritWorthyInventoryList:IsCompleted(inventory_data)
-  if not (inventory_data
-    and inventory_data.unique_id
-    and WritWorthy.savedChariables
-    and WritWorthy.savedChariables.writ_unique_id
-    and WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id]
-  ) then
+  if
+  not (inventory_data and inventory_data.unique_id and WritWorthy.savedChariables and
+    WritWorthy.savedChariables.writ_unique_id and
+    WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id])
+  then
     return false
   end
-  return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id].state
-    == WritWorthyInventoryList.STATE_COMPLETED
+  return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id].state ==
+    WritWorthyInventoryList.STATE_COMPLETED
 end
 
 -- Can this row be queued in LibLazyCrafting?
@@ -637,9 +631,10 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
   if not inventory_data.llc_func then
     return false, "WritWorthy bug: Missing LLC data"
   end
-  if inventory_data.parser.request_item
-    and inventory_data.parser.request_item.school
-    and inventory_data.parser.request_item.school.autocraft_not_implemented then
+  if
+  inventory_data.parser.request_item and inventory_data.parser.request_item.school and
+    inventory_data.parser.request_item.school.autocraft_not_implemented
+  then
     return false, "WritWorthy not yet implemented: jewelry crafting."
   end
 
@@ -678,10 +673,10 @@ function WritWorthyInventoryList:CanMimic(inventory_data)
     return false, "completed"
   end
 
-  if inventory_data.parser
-    and inventory_data.parser.request_item
-    and inventory_data.parser.request_item.school
-    and inventory_data.parser.request_item.school.motif_required then
+  if
+  inventory_data.parser and inventory_data.parser.request_item and inventory_data.parser.request_item.school and
+    inventory_data.parser.request_item.school.motif_required
+  then
     return true, ""
   else
     return false, "motif not required"
@@ -701,7 +696,9 @@ local UI_TYPE_ENCHANTING = nil -- GetString(SI_ITEMFILTERTYPE17)
 local UI_TYPE_PROVISIONING = nil -- GetString(SI_ITEMFILTERTYPE18)
 
 function WritWorthyInventoryList.InitUITypeStr()
-  if UI_TYPE_WOOD then return end
+  if UI_TYPE_WOOD then
+    return
+  end
 
   UI_TYPE_WOOD = WritWorthy.SI("SI_ITEMFILTERTYPE15")
   UI_TYPE_HEAVY = WritWorthy.SI("SI_ARMORTYPE3")
@@ -711,7 +708,6 @@ function WritWorthyInventoryList.InitUITypeStr()
   UI_TYPE_ALCHEMY = WritWorthy.SI("SI_ITEMFILTERTYPE16")
   UI_TYPE_ENCHANTING = WritWorthy.SI("SI_ITEMFILTERTYPE17")
   UI_TYPE_PROVISIONING = WritWorthy.SI("SI_ITEMFILTERTYPE18")
-
 end
 
 -- Fill in all inventory_data.ui_xxx fields.
@@ -738,7 +734,7 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
   -- For less typing.
   local parser = inventory_data.parser
   if parser.class == WritWorthy.Smithing.Parser.class then
-    local ri = parser.request_item  -- For less typing.
+    local ri = parser.request_item -- For less typing.
     if ri.school == WritWorthy.Smithing.SCHOOL_WOOD then
       inventory_data.ui_type = UI_TYPE_WOOD
     elseif ri.school == WritWorthy.Smithing.SCHOOL_JEWELRY then
@@ -792,7 +788,6 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
   inventory_data.ui_detail4 = self.Shorten(inventory_data.ui_detail4)
   inventory_data.ui_detail5 = self.Shorten(inventory_data.ui_detail5)
 
-
   -- "Sort by station" key.  Consumables to the front,
   -- then set bonus sites.
   if parser.class == WritWorthy.Alchemy.Parser.class then
@@ -805,18 +800,17 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     local set_name = inventory_data.ui_detail1
     local crafting_type = parser.request_item.school.trade_skill_type
 
-    local t = string.format("04 %s %02d"
-    , set_name
-    , crafting_type
-    )
+    local t = string.format("04 %s %02d", set_name, crafting_type)
     inventory_data.ui_station_sort = t
   end
 end
 
 function WritWorthyInventoryList_MimicToggled(cell_control, checked)
   Log:StartNewEvent()
-  Log:Add("WritWorthyInventoryList_MimicToggled() checked:" .. tostring(checked)
-    .. " unique_id:" .. tostring(cell_control.inventory_data.unique_id))
+  Log:Add(
+    "WritWorthyInventoryList_MimicToggled() checked:" ..
+      tostring(checked) .. " unique_id:" .. tostring(cell_control.inventory_data.unique_id)
+  )
   local unique_id = cell_control.inventory_data.unique_id
   WritWorthyInventoryList.SaveChariableMimic(unique_id, checked)
   local self = WritWorthyInventoryList.singleton
@@ -827,7 +821,9 @@ end
 -- Toggling mimic stone setting for a queued item means we need to
 -- tell LLC about the change.
 function WritWorthyInventoryList:Requeue(inventory_data)
-  if not self:IsQueued(inventory_data) then return end
+  if not self:IsQueued(inventory_data) then
+    return
+  end
   self:Dequeue(inventory_data)
   self:Enqueue(inventory_data)
 end
@@ -835,8 +831,10 @@ end
 -- Called by ZOS code after user clicks in any of our "Enqueue" checkboxes.
 function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
   Log:StartNewEvent()
-  Log:Add("WritWorthyInventoryList_EnqueueToggled() checked:" .. tostring(checked)
-    .. " unique_id:" .. tostring(cell_control.inventory_data.unique_id))
+  Log:Add(
+    "WritWorthyInventoryList_EnqueueToggled() checked:" ..
+      tostring(checked) .. " unique_id:" .. tostring(cell_control.inventory_data.unique_id)
+  )
   self = WritWorthyInventoryList.singleton
   if checked then
     self:Enqueue(cell_control.inventory_data)
@@ -876,21 +874,39 @@ local function DumpSkills()
     Log:Add("t:" .. tostring(skill_type) .. "  num_lines:" .. tostring(num_lines))
     for skill_index = 1, num_lines do
       local num_abilities = GetNumSkillAbilities(skill_type, skill_index)
-      Log:Add("t:" .. tostring(skill_type) .. " i:" .. tostring(skill_index)
-        .. "  num_abilities:" .. tostring(num_abilities))
+      Log:Add(
+        "t:" ..
+          tostring(skill_type) ..
+          " i:" .. tostring(skill_index) .. "  num_abilities:" .. tostring(num_abilities)
+      )
       for ability_index = 1, num_abilities do
         local info = { GetSkillAbilityInfo(skill_type, skill_index, ability_index) }
         local id = GetSkillAbilityId(skill_type, skill_index, ability_index, false)
-        Log:Add("t i a:" .. tostring(skill_type) .. " " .. tostring(skill_index)
-          .. " " .. tostring(ability_index)
-          .. " id:" .. tostring(id)
-          .. " name:" .. tostring(info[1])
-          .. " tex:" .. tostring(info[2])
-          .. " earnedRank:" .. tostring(info[3])
-          .. " passive:" .. tostring(info[4])
-          .. " ultimate:" .. tostring(info[5])
-          .. " purchased:" .. tostring(info[6])
-          .. " progression:" .. tostring(info[7])
+        Log:Add(
+          "t i a:" ..
+            tostring(skill_type) ..
+            " " ..
+            tostring(skill_index) ..
+            " " ..
+            tostring(ability_index) ..
+            " id:" ..
+            tostring(id) ..
+            " name:" ..
+            tostring(info[1]) ..
+            " tex:" ..
+            tostring(info[2]) ..
+            " earnedRank:" ..
+            tostring(info[3]) ..
+            " passive:" ..
+            tostring(info[4]) ..
+            " ultimate:" ..
+            tostring(info[5]) ..
+            " purchased:" ..
+            tostring(info[6]) ..
+            " progression:" ..
+            tostring(
+              info[7]
+            )
         )
       end
     end
@@ -906,7 +922,6 @@ function WritWorthyInventoryList_SortByStation()
   self.currentSortOrder = ZO_SORT_ORDER_UP
   self:RefreshData()
 end
-
 
 -- ZO_ScrollFilterList will instantiate (or reuse!) a
 -- WritWorthyInventoryListRow row_control to display some inventory_data. But
@@ -965,7 +980,9 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
       end
     end
   end
-  if not c2 then c2 = c end
+  if not c2 then
+    c2 = c
+  end
   -- Allow each cell's OnMouseDown handler easy
   -- access to this row's data.
   for _, name in ipairs(self.CELL_NAME_LIST) do
@@ -1036,9 +1053,9 @@ function WritWorthyInventoryList:PurgeAncientSavedChariables()
     -- timestamp at all (should no longer occur, such data
     -- is leftovers from older unreleased code).
     if current[unique_id] or not sav.last_seen_ts then
-      sav.last_seen_ts = now
       -- Schedule for deletion any records whose writ
       -- we've not seen in a long time.
+      sav.last_seen_ts = now
     elseif sav.last_seen_ts and sav.last_seen_ts < too_old then
       table.insert(doomed, unique_id)
     end
@@ -1048,8 +1065,7 @@ function WritWorthyInventoryList:PurgeAncientSavedChariables()
     WritWorthy.savedChariables.writ_unique_id[unique_id] = nil
   end
   if 0 < #doomed then
-    Log:Add("PurgeAncientSavedChariables() purged writ_unique_id count:"
-      .. tostring(#doomed))
+    Log:Add("PurgeAncientSavedChariables() purged writ_unique_id count:" .. tostring(#doomed))
   end
 end
 
@@ -1063,13 +1079,14 @@ function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
   Log:Add("LLCCompleted event:" .. tostring(event) .. " station:" .. tostring(station))
   -- Just finished crafting at this station.
   -- Auto-exit the station so that we can move on.
-  if event == LLC_NO_FURTHER_CRAFT_POSSIBLE
-    and WritWorthyInventoryList.auto_exit_soon then
+  if event == LLC_NO_FURTHER_CRAFT_POSSIBLE and WritWorthyInventoryList.auto_exit_soon then
     WritWorthyInventoryList.auto_exit_soon = false
     SCENE_MANAGER:ShowBaseScene()
   end
 
-  if event ~= LLC_CRAFT_SUCCESS then return end
+  if event ~= LLC_CRAFT_SUCCESS then
+    return
+  end
 
   -- Invalidate any cache that depends on our list
   -- of "writ's we've crafted"
@@ -1087,7 +1104,9 @@ function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
   if llc_result then
     unique_id = llc_result.reference
   end
-  if not unique_id then return end
+  if not unique_id then
+    return
+  end
   -- Log:Add("LibLazyCrafting completed"
   --         .." unique_id:"..tostring(unique_id)
   --         .." event:"..tostring(event)
@@ -1097,13 +1116,13 @@ function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
   --     Log:Add("llc_result k:"..tostring(k).." v:"..tostring(v))
   -- end
   local self = WritWorthyInventoryList.singleton
-  if not self then return end
+  if not self then
+    return
+  end
 
   -- Remember that this writ is now "completed", no
   -- longer "queued".
-  self.SaveChariableState(
-    unique_id
-  , WritWorthyInventoryList.STATE_COMPLETED)
+  self.SaveChariableState(unique_id, WritWorthyInventoryList.STATE_COMPLETED)
 
   -- Upate UI to display new "completed" state that we
   -- just recorded.
@@ -1116,7 +1135,9 @@ function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
 end
 
 function WritWorthyInventoryList:UniqueIDToInventoryData(unique_id)
-  if not self.inventory_data_by_unique_id then return nil end
+  if not self.inventory_data_by_unique_id then
+    return nil
+  end
   return self.inventory_data_by_unique_id[unique_id]
 end
 
@@ -1128,8 +1149,7 @@ end
 -- seconds.
 --
 function WritWorthyInventoryList:UpdateUISoon(inventory_data)
-  Log:Add("WritWorthyInventoryList:UpdateUISoon  unique_id:"
-    .. tostring(inventory_data.unique_id))
+  Log:Add("WritWorthyInventoryList:UpdateUISoon  unique_id:" .. tostring(inventory_data.unique_id))
   self.LogLLCQueue(WritWorthyInventoryList:GetLLC().personalQueue)
   self:UpdateSummaryAndQButtons()
   self:Refresh()
@@ -1169,9 +1189,9 @@ function WritWorthyInventoryList:GetLLC()
   local lib = LibLazyCrafting
   self.LibLazyCrafting_lib = lib
   self.LibLazyCrafting = lib:AddRequestingAddon(
-    WritWorthy.name            -- name
-  , true                       -- autocraft
-  , WritWorthyInventoryList_LLCCompleted    -- functionCallback
+    WritWorthy.name, -- name
+    true, -- autocraft
+    WritWorthyInventoryList_LLCCompleted -- functionCallback
   )
 
   Log:StartNewEvent()
@@ -1227,10 +1247,7 @@ function WritWorthyInventoryList:GetLLC()
   -- exhaustion of crafting materials.
   -- LLC version 2.9 has reports of not infinite-looping.
   WritWorthy.Smithing.SCHOOL_JEWELRY.autocraft_not_implemented = true
-  if llc_global
-    and llc_global.version
-    and (2.91 <= llc_global.version)
-  then
+  if llc_global and llc_global.version and (2.91 <= llc_global.version) then
     WritWorthy.Smithing.SCHOOL_JEWELRY.autocraft_not_implemented = false
   end
 
@@ -1239,8 +1256,60 @@ end
 
 -- Copied from LLC internals
 local function getItemLinkFromItemId(itemId)
-  local name = GetItemLinkName(ZO_LinkHandler_CreateLink("Test Trash", nil, ITEM_LINK_TYPE, itemId, 1, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 10000, 0))
-  return ZO_LinkHandler_CreateLink(zo_strformat("<<t:1>>", name), nil, ITEM_LINK_TYPE, itemId, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+  local name = GetItemLinkName(
+    ZO_LinkHandler_CreateLink(
+      "Test Trash",
+      nil,
+      ITEM_LINK_TYPE,
+      itemId,
+      1,
+      26,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      5,
+      0,
+      0,
+      0,
+      10000,
+      0
+    )
+  )
+  return ZO_LinkHandler_CreateLink(
+    zo_strformat("<<t:1>>", name),
+    nil,
+    ITEM_LINK_TYPE,
+    itemId,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  )
 end
 
 local function HaveMaterials(mat_list)
@@ -1251,12 +1320,16 @@ local function HaveMaterials(mat_list)
     end
     if item_link then
       local have_ct = Util.MatHaveCt(item_link)
-      Log:Add("HaveMaterials: " .. tostring(mat.required_ct)
-        .. " <=? " .. tostring(have_ct) .. "  " .. tostring(item_link))
+      Log:Add(
+        "HaveMaterials: " ..
+          tostring(mat.required_ct) .. " <=? " .. tostring(have_ct) .. "  " .. tostring(item_link)
+      )
       if have_ct < mat.required_ct then
-        d("WritWorthy: insufficient materials: " .. tostring(item_link)
-          .. ": require " .. tostring(mat.required_ct)
-          .. "  have " .. tostring(have_ct))
+        d(
+          "WritWorthy: insufficient materials: " ..
+            tostring(item_link) ..
+            ": require " .. tostring(mat.required_ct) .. "  have " .. tostring(have_ct)
+        )
         return false
       end
     else
@@ -1285,7 +1358,9 @@ function WritWorthy_LLC_IsItemCraftable(self, station_crafting_type, request)
   local orig = self.llc_orig_is_item_craftable[station_crafting_type]
   local orig_can_craft = orig and orig(self, station_crafting_type, request)
 
-  if orig_can_craft then return orig_can_craft end
+  if orig_can_craft then
+    return orig_can_craft
+  end
 
   -- Was this request one of ours? Don't run our
   -- additional error dumpage for other add-ons'
@@ -1303,8 +1378,7 @@ function WritWorthy_LLC_IsItemCraftable(self, station_crafting_type, request)
   -- Is this a set bonus request but at the wrong
   -- set bonus station?
   local llc = WritWorthyInventoryList:GetLLC()
-  if request.setIndex and 1 < request.setIndex
-    and request.setIndex ~= llc.GetCurrentSetInteractionIndex() then
+  if request.setIndex and 1 < request.setIndex and request.setIndex ~= llc.GetCurrentSetInteractionIndex() then
     return orig_can_craft
   end
   -- The request is one of ours, at the correct station,
@@ -1318,11 +1392,12 @@ function WritWorthy_LLC_IsItemCraftable(self, station_crafting_type, request)
   for _, mat_row in ipairs(mat_list) do
     local have_ct = Util.MatHaveCt(mat_row.link)
     if have_ct < mat_row.ct then
-      Log.Error("Cannot craft %s: insufficient materials. %d/%d %s"
-      , inventory_data.item_link
-      , have_ct
-      , mat_row.ct
-      , mat_row.link
+      Log.Error(
+        "Cannot craft %s: insufficient materials. %d/%d %s",
+        inventory_data.item_link,
+        have_ct,
+        mat_row.ct,
+        mat_row.link
       )
       -- else
       --     Log.Debug( "Can craft %s: sufficient materials. %d/%d %s"
@@ -1340,37 +1415,34 @@ end
 -- Hook called by LibLazyCrafting before attempting to craft each request.
 -- Return true if it's okay to start crafting it, false if not.
 function WritWorthy_LLC_IsItemCraftable_Alchemy(self, station_crafting_type, request)
-  if station_crafting_type ~= CRAFTING_TYPE_ALCHEMY then return false end
+  if station_crafting_type ~= CRAFTING_TYPE_ALCHEMY then
+    return false
+  end
 
   local mat_list = {
     { item_id = request.solventId, required_ct = request.timesToMake },
     { item_id = request.reagentId1, required_ct = request.timesToMake },
     { item_id = request.reagentId2, required_ct = request.timesToMake },
-    { item_id = request.reagentId3, required_ct = request.timesToMake },
+    { item_id = request.reagentId3, required_ct = request.timesToMake }
   }
   return HaveMaterials(mat_list)
 end
 
 function WritWorthy_LLC_IsItemCraftable_Provisioning(self, station_crafting_type, request)
-  if station_crafting_type ~= CRAFTING_TYPE_PROVISIONING then return false end
+  if station_crafting_type ~= CRAFTING_TYPE_PROVISIONING then
+    return false
+  end
 
   local mat_list = {}
   local recipe_link = getItemLinkFromItemId(request.recipeId)
   local mat_ct = GetItemLinkRecipeNumIngredients(recipe_link)
   for ingr_index = 1, mat_ct do
-    local _, _, ingr_ct = GetItemLinkRecipeIngredientInfo(
-      recipe_link
-    , ingr_index)
-    local ingr_link = GetItemLinkRecipeIngredientItemLink(
-      recipe_link
-    , ingr_index
-    , LINK_STYLE_DEFAULT)
-    if ingr_ct
-      and (0 < ingr_ct)
-      and ingr_link
-      and (ingr_link ~= "") then
-      local mat = { item_link = ingr_link
-      , required_ct = ingr_ct * request.timesToMake
+    local _, _, ingr_ct = GetItemLinkRecipeIngredientInfo(recipe_link, ingr_index)
+    local ingr_link = GetItemLinkRecipeIngredientItemLink(recipe_link, ingr_index, LINK_STYLE_DEFAULT)
+    if ingr_ct and (0 < ingr_ct) and ingr_link and (ingr_link ~= "") then
+      local mat = {
+        item_link = ingr_link,
+        required_ct = ingr_ct * request.timesToMake
       }
       table.insert(mat_list, mat)
     end
@@ -1398,7 +1470,6 @@ function WritWorthyInventoryList.SaveChariableMimic(unique_id, use_mimic)
   return WritWorthy.savedChariables.writ_unique_id[unique_id]
 end
 
-
 -- Add the given item to LibLazyCrafting's queue of stuff
 -- to be automatically crafted later.
 function WritWorthyInventoryList:Enqueue(inventory_data)
@@ -1409,8 +1480,10 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
   -- Avoid enqueing the same writ twice: If we already
   -- enqueued this specific writ, do nothing.
   if self:IsQueued(inventory_data) then
-    d("WritWorthy bug: Already enqueued. UI incorrectly showed item as"
-      .. " not enqueued. Sealed writ unique_id:" .. tostring(unique_id))
+    d(
+      "WritWorthy bug: Already enqueued. UI incorrectly showed item as" ..
+        " not enqueued. Sealed writ unique_id:" .. tostring(unique_id)
+    )
     return
   end
 
@@ -1419,9 +1492,7 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
 
   -- Remember this in savedChariables so that
   -- we can restore checkbox state after /reloadui.
-  self.SaveChariableState(
-    unique_id
-  , WritWorthyInventoryList.STATE_QUEUED)
+  self.SaveChariableState(unique_id, WritWorthyInventoryList.STATE_QUEUED)
 
   self.EmitQueueChanged()
 end
@@ -1476,14 +1547,13 @@ function WritWorthyInventoryList:LLC_Missing(llc_func)
   d("WritWorthy: LibLazyCrafting function missing:" .. tostring(llc_func))
   grey("WritWorthy version:" .. WritWorthy.version)
   grey("LibLazyCrafting version:" .. tostring(LLC.version))
-  if self.LibLazyCrafting_lib
-    and self.LibLazyCrafting_lib.widgets then
+  if self.LibLazyCrafting_lib and self.LibLazyCrafting_lib.widgets then
     for k, v in pairs(self.LibLazyCrafting_lib.widgets) do
       grey("llc widget:" .. tostring(k) .. " version:" .. tostring(v))
     end
   end
   local AM = GetAddOnManager()
-  local _NAME = 1  -- GetAddOnInfo() result indices
+  local _NAME = 1 -- GetAddOnInfo() result indices
   local _TITLE = 2
   local _ENABLED = 5
   for i = 1, AM:GetNumAddOns() do
@@ -1531,26 +1601,25 @@ end
 -- This can be HUGE if you have dozens of sealed writs in inventory, so
 -- comment this out before shipping.
 function WritWorthyInventoryList.LogLLCQueue(queue)
-  if not queue then return end
+  if not queue then
+    return
+  end
 
   for kk, vv in pairs(queue) do
     local vstr = tostring(vv)
     if type(vv) == "table" then
       vstr = vstr .. "  ct:" .. tostring(#vv)
     end
-    Log:Add("LibLazyCrafting queue k:" .. tostring(kk)
-      .. "  v:" .. vstr)
+    Log:Add("LibLazyCrafting queue k:" .. tostring(kk) .. "  v:" .. vstr)
     if type(vv) == "table" then
       for k, v in pairs(vv) do
-        Log:Add("LibLazyCrafting queue k:" .. tostring(kk)
-          .. "," .. tostring(k)
-          .. "    v:" .. tostring(v))
+        Log:Add("LibLazyCrafting queue k:" .. tostring(kk) .. "," .. tostring(k) .. "    v:" .. tostring(v))
         if type(v) == "table" then
           for k3, v3 in pairs(v) do
-            Log:Add("LibLazyCrafting queue k:" .. tostring(kk)
-              .. "," .. tostring(k)
-              .. "," .. tostring(k3)
-              .. "    v:" .. tostring(v3))
+            Log:Add(
+              "LibLazyCrafting queue k:" ..
+                tostring(kk) .. "," .. tostring(k) .. "," .. tostring(k3) .. "    v:" .. tostring(v3)
+            )
           end
         end
       end
@@ -1563,7 +1632,9 @@ end
 -- general-purpose broadcaster/listener machine here.
 --
 function WritWorthyInventoryList.EmitQueueChanged()
-  if not WritWorthy.MatUI then return end
+  if not WritWorthy.MatUI then
+    return
+  end
   WritWorthy.MatUI.OnWWQueueChanged()
 end
 
@@ -1618,8 +1689,7 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
         local mat_gold = WritWorthy.MatRow.ListTotal(mat_list) or 0
         total_queued_mat_gold = total_queued_mat_gold + mat_gold
         can_dequeue_any = true
-      elseif inventory_data.ui_can_queue
-        and not inventory_data.ui_is_queued then
+      elseif inventory_data.ui_can_queue and not inventory_data.ui_is_queued then
         can_enqueue_any = true
       elseif self:IsCompleted(inventory_data) then
         local voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
@@ -1679,8 +1749,7 @@ function WritWorthyInventoryList:EnqueueAll()
     -- reality instead of inventory.can_queue/ui_is_queued
     -- because that might not be filled in yet for rows
     -- scrolled offscreen.
-    if self:CanQueue(inventory_data)
-      and not self:IsQueued(inventory_data) then
+    if self:CanQueue(inventory_data) and not self:IsQueued(inventory_data) then
       self:Enqueue(inventory_data)
     end
   end
@@ -1699,16 +1768,24 @@ function WritWorthyInventoryList:DequeueAll()
 end
 
 function WritWorthyInventoryList:HSMAddMark(inventory_data)
-  if not HomeStationMarker then return end
+  if not HomeStationMarker then
+    return
+  end
   local set_id, station_id = self:InventoryDataToHSMTuple(inventory_data)
-  if not station_id then return end
+  if not station_id then
+    return
+  end
   HomeStationMarker.AddMarker(set_id, station_id)
 end
 
 function WritWorthyInventoryList:HSMDeleteMark(inventory_data)
-  if not HomeStationMarker then return end
+  if not HomeStationMarker then
+    return
+  end
   local set_id, station_id = self:InventoryDataToHSMTuple(inventory_data)
-  if not station_id then return end
+  if not station_id then
+    return
+  end
   HomeStationMarker.DeleteMarker(set_id, station_id)
 end
 
@@ -1721,18 +1798,23 @@ end
 -- LibLazyCrafting. LLC can now unconditionally call AddMarker() after load.
 --
 function WritWorthyInventoryList:HSMRestoreMark(inventory_data)
-  if not HomeStationMarker then return end
-  if not HomeStationMarker.is_ref_counts_forgotten then return end
+  if not HomeStationMarker then
+    return
+  end
+  if not HomeStationMarker.is_ref_counts_forgotten then
+    return
+  end
   WritWorthyInventoryList:HSMAddMark(inventory_data)
 end
 
 function WritWorthyInventoryList:InventoryDataToHSMTuple(inventory_data)
   local parser = inventory_data.parser
-  if not parser then return end
+  if not parser then
+    return
+  end
   local set_id = HomeStationMarker.SET_ID_NONE
   local station_id = parser.crafting_type
-  if parser.set_bonus
-    and parser.set_bonus.set_id then
+  if parser.set_bonus and parser.set_bonus.set_id then
     set_id = parser.set_bonus.set_id
   end
   return set_id, station_id
