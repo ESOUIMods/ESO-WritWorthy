@@ -416,47 +416,62 @@ end
 
 -- Tooltip Intercept ---------------------------------------------------------
 
--- Monkey-patch ZOS' ItemTooltip with our own after-overrides. Lets ZOS code
--- create and show the original tooltip, and then we come in and insert our
--- own stuff.
---
--- Based on CraftStore's CS.TooltipHandler().
--- Updated 2019-05 by Sirinsidiator to work with AwesomeGuildStore 1.1.
+-- Modern tooltip hooking system using utility functions instead of ancient monkey-patching
+-- Cleaner, more maintainable approach based on modern addon patterns
 --
 function WritWorthy.TooltipInterceptInstall()
-  local tt = ItemTooltip.SetBagItem
-  ItemTooltip.SetBagItem = function(control, bagId, slotIndex, ...)
-    tt(control, bagId, slotIndex, ...)
-    WritWorthy.TooltipInsertOurText(
-      control,
-      GetItemLink(bagId, slotIndex),
-      nil, -- purchase_gold
-      WritWorthy.UniqueID(bagId, slotIndex)
-    )
-  end
-  local tt = ItemTooltip.SetLootItem
-  ItemTooltip.SetLootItem = function(control, lootId, ...)
-    tt(control, lootId, ...)
-    WritWorthy.TooltipInsertOurText(control, GetLootItemLink(lootId))
-  end
-  local tt = PopupTooltip.SetLink
-  PopupTooltip.SetLink = function(control, link, ...)
-    tt(control, link, ...)
-    WritWorthy.TooltipInsertOurText(control, link)
-  end
+  -- Utility function to hook tooltip methods cleanly
+  local function TooltipHook(tooltipControl, method, linkFunc, extraDataFunc)
+    local originalMethod = tooltipControl[method]
+    tooltipControl[method] = function(self, ...)
+      -- Call original method first
+      originalMethod(self, ...)
 
-  local function SetupTradingHouseItemTooltipHook()
-    local tt = ItemTooltip.SetTradingHouseItem
-    ItemTooltip.SetTradingHouseItem = function(control, tradingHouseIndex, ...)
-      tt(control, tradingHouseIndex, ...)
-      local _, _, _, _, _, _, purchase_gold = GetTradingHouseSearchResultItemInfo(tradingHouseIndex)
+      -- Get item link and any extra data
+      local itemLink = linkFunc(...)
+      local extraData = extraDataFunc and extraDataFunc(...) or {}
+
+      -- Add our custom tooltip content
       WritWorthy.TooltipInsertOurText(
-        control,
-        GetTradingHouseSearchResultItemLink(tradingHouseIndex),
-        purchase_gold
+        self,
+        itemLink,
+        extraData.purchase_gold,
+        extraData.unique_id,
+        extraData.style
       )
     end
   end
+
+  -- Return item link as-is (for link-based tooltips)
+  local function ReturnItemLink(itemLink)
+    return itemLink
+  end
+
+  -- Get bag item link with unique ID
+  local function GetBagItemData(bagId, slotIndex)
+    return {
+      unique_id = WritWorthy.UniqueID(bagId, slotIndex)
+    }
+  end
+
+  -- Get trading house item data with purchase price
+  local function GetTradingHouseData(tradingHouseIndex)
+    local _, _, _, _, _, _, purchase_gold = GetTradingHouseSearchResultItemInfo(tradingHouseIndex)
+    return {
+      purchase_gold = purchase_gold
+    }
+  end
+
+  -- Standard tooltip hooks
+  TooltipHook(ItemTooltip, "SetBagItem", GetItemLink, GetBagItemData)
+  TooltipHook(ItemTooltip, "SetLootItem", GetLootItemLink)
+  TooltipHook(PopupTooltip, "SetLink", ReturnItemLink)
+
+  -- Trading house tooltip setup (with AGS compatibility)
+  local function SetupTradingHouseItemTooltipHook()
+    TooltipHook(ItemTooltip, "SetTradingHouseItem", GetTradingHouseSearchResultItemLink, GetTradingHouseData)
+  end
+
   if AwesomeGuildStore then
     AwesomeGuildStore:RegisterCallback(
       AwesomeGuildStore.callback.AFTER_INITIAL_SETUP,
@@ -466,6 +481,7 @@ function WritWorthy.TooltipInterceptInstall()
     SetupTradingHouseItemTooltipHook()
   end
 
+  -- Gamepad tooltip setup (maintaining ZO_PostHook for special handling)
   local function SetupGamepadTooltip()
     local leftGamepadTooltip = GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_LEFT_TOOLTIP)
     ZO_PostHook(
