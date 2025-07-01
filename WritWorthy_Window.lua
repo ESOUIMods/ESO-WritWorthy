@@ -203,7 +203,7 @@ function WritWorthyInventoryList_HeaderInit(control, name, text, key)
     l10n_text, -- name
     key or string.lower(text), -- key
     ZO_SORT_ORDER_DOWN, -- initialDirection
-    align or TEXT_ALIGN_LEFT, -- alignment
+    TEXT_ALIGN_LEFT, -- alignment
     "ZoFontWinT1", -- font
     nil -- highlightTemplate
   )
@@ -288,7 +288,7 @@ function WritWorthyInventoryList:Initialize(control)
   -- After ZO_SortFilterList:Initialize() we  have a
   -- sortHeaderGroup. At least, that's how it works in
   -- ScrollListExample.
-  self.sortHeaderGroup:SelectHeaderByKey("detail1")
+  self.sortHeaderGroup:SelectHeaderByKey("ui_detail1")
   ZO_SortHeader_OnMouseExit(WritWorthyUIInventoryListHeadersType)
   self:RefreshData()
 
@@ -604,7 +604,7 @@ function WritWorthyInventoryList:IsUseMimic(inventory_data)
   then
     return false
   end
-  return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id].use_mimic
+  return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id].use_mimic or false
 end
 
 function WritWorthyInventoryList:IsCompleted(inventory_data)
@@ -835,7 +835,7 @@ function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
     "WritWorthyInventoryList_EnqueueToggled() checked:" ..
       tostring(checked) .. " unique_id:" .. tostring(cell_control.inventory_data.unique_id)
   )
-  self = WritWorthyInventoryList.singleton
+  local self = WritWorthyInventoryList.singleton
   if checked then
     self:Enqueue(cell_control.inventory_data)
   else
@@ -848,7 +848,7 @@ end
 -- Called by ZOS code after user clicks "Enqueue All"
 function WritWorthyInventoryList_EnqueueAll()
   Log:StartNewEvent()
-  self = WritWorthyInventoryList.singleton
+  local self = WritWorthyInventoryList.singleton
   self:EnqueueAll()
   self:Refresh()
   self:UpdateSummaryAndQButtons()
@@ -857,7 +857,7 @@ end
 -- Called by ZOS code after user clicks "Dequeue All"
 function WritWorthyInventoryList_DequeueAll()
   Log:StartNewEvent()
-  self = WritWorthyInventoryList.singleton
+  local self = WritWorthyInventoryList.singleton
   self:DequeueAll()
   self:Refresh()
   self:UpdateSummaryAndQButtons()
@@ -917,7 +917,7 @@ end
 function WritWorthyInventoryList_SortByStation()
   Log:StartNewEvent()
   Log:Add("SortByStation")
-  self = WritWorthyInventoryList.singleton
+  local self = WritWorthyInventoryList.singleton
   self.currentSortKey = "ui_station_sort"
   self.currentSortOrder = ZO_SORT_ORDER_UP
   self:RefreshData()
@@ -1504,7 +1504,7 @@ end
 -- Enqueues one or more copies of inventory_data's request.
 --
 function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
-  self = WritWorthyInventoryList.singleton
+  local self = WritWorthyInventoryList.singleton
   if not inventory_data.llc_func then
     -- Either this row should not have had its
     -- "Enqueue" checkbox enabled, or this row
