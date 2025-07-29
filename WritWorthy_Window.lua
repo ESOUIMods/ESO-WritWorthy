@@ -161,10 +161,10 @@ end
 
 function WritWorthyUI_Refresh()
   WritWorthy.RequiredSkill.ResetCache()
-  local list = WritWorthyInventoryList.singleton
-  list:BuildMasterlist()
-  list:Refresh()
-  list:UpdateSummaryAndQButtons()
+  local singleton = WritWorthyInventoryList.singleton
+  singleton:BuildMasterlist()
+  singleton:Refresh()
+  singleton:UpdateSummaryAndQButtons()
 end
 
 -- Rather than waste CPU time re-calculating window display state
@@ -203,7 +203,7 @@ function WritWorthyInventoryList_HeaderInit(control, name, text, key)
     l10n_text, -- name
     key or string.lower(text), -- key
     ZO_SORT_ORDER_DOWN, -- initialDirection
-    align or TEXT_ALIGN_LEFT, -- alignment
+    TEXT_ALIGN_LEFT, -- alignment
     "ZoFontWinT1", -- font
     nil -- highlightTemplate
   )
@@ -288,7 +288,7 @@ function WritWorthyInventoryList:Initialize(control)
   -- After ZO_SortFilterList:Initialize() we  have a
   -- sortHeaderGroup. At least, that's how it works in
   -- ScrollListExample.
-  self.sortHeaderGroup:SelectHeaderByKey("detail1")
+  self.sortHeaderGroup:SelectHeaderByKey("ui_detail1")
   ZO_SortHeader_OnMouseExit(WritWorthyUIInventoryListHeadersType)
   self:RefreshData()
 
@@ -604,7 +604,7 @@ function WritWorthyInventoryList:IsUseMimic(inventory_data)
   then
     return false
   end
-  return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id].use_mimic
+  return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id].use_mimic or false
 end
 
 function WritWorthyInventoryList:IsCompleted(inventory_data)
@@ -813,8 +813,7 @@ function WritWorthyInventoryList_MimicToggled(cell_control, checked)
   )
   local unique_id = cell_control.inventory_data.unique_id
   WritWorthyInventoryList.SaveChariableMimic(unique_id, checked)
-  local self = WritWorthyInventoryList.singleton
-  self:Requeue(cell_control.inventory_data)
+  WritWorthyInventoryList.singleton:Requeue(cell_control.inventory_data)
   Log:EndEvent()
 end
 
@@ -835,32 +834,32 @@ function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
     "WritWorthyInventoryList_EnqueueToggled() checked:" ..
       tostring(checked) .. " unique_id:" .. tostring(cell_control.inventory_data.unique_id)
   )
-  self = WritWorthyInventoryList.singleton
+  local singleton = WritWorthyInventoryList.singleton
   if checked then
-    self:Enqueue(cell_control.inventory_data)
+    singleton:Enqueue(cell_control.inventory_data)
   else
-    self:Dequeue(cell_control.inventory_data)
+    singleton:Dequeue(cell_control.inventory_data)
   end
   -- self.LogLLCQueue(WritWorthyInventoryList:GetLLC().personalQueue)
-  self:UpdateUISoon(cell_control.inventory_data)
+  singleton:UpdateUISoon(cell_control.inventory_data)
 end
 
 -- Called by ZOS code after user clicks "Enqueue All"
 function WritWorthyInventoryList_EnqueueAll()
   Log:StartNewEvent()
-  self = WritWorthyInventoryList.singleton
-  self:EnqueueAll()
-  self:Refresh()
-  self:UpdateSummaryAndQButtons()
+  local singleton = WritWorthyInventoryList.singleton
+  singleton:EnqueueAll()
+  singleton:Refresh()
+  singleton:UpdateSummaryAndQButtons()
 end
 
 -- Called by ZOS code after user clicks "Dequeue All"
 function WritWorthyInventoryList_DequeueAll()
   Log:StartNewEvent()
-  self = WritWorthyInventoryList.singleton
-  self:DequeueAll()
-  self:Refresh()
-  self:UpdateSummaryAndQButtons()
+  local singleton = WritWorthyInventoryList.singleton
+  singleton:DequeueAll()
+  singleton:Refresh()
+  singleton:UpdateSummaryAndQButtons()
 end
 
 -- No longer used, but boy howdy this was a fun way to get the skill IDs for
@@ -917,10 +916,10 @@ end
 function WritWorthyInventoryList_SortByStation()
   Log:StartNewEvent()
   Log:Add("SortByStation")
-  self = WritWorthyInventoryList.singleton
-  self.currentSortKey = "ui_station_sort"
-  self.currentSortOrder = ZO_SORT_ORDER_UP
-  self:RefreshData()
+  local singleton = WritWorthyInventoryList.singleton
+  singleton.currentSortKey = "ui_station_sort"
+  singleton.currentSortOrder = ZO_SORT_ORDER_UP
+  singleton:RefreshData()
 end
 
 -- ZO_ScrollFilterList will instantiate (or reuse!) a
@@ -1115,22 +1114,22 @@ function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
   -- for k,v in pairs(llc_result) do
   --     Log:Add("llc_result k:"..tostring(k).." v:"..tostring(v))
   -- end
-  local self = WritWorthyInventoryList.singleton
-  if not self then
+  local singleton = WritWorthyInventoryList.singleton
+  if not singleton then
     return
   end
 
   -- Remember that this writ is now "completed", no
   -- longer "queued".
-  self.SaveChariableState(unique_id, WritWorthyInventoryList.STATE_COMPLETED)
+  singleton.SaveChariableState(unique_id, WritWorthyInventoryList.STATE_COMPLETED)
 
   -- Upate UI to display new "completed" state that we
   -- just recorded.
-  local inventory_data = self:UniqueIDToInventoryData(unique_id)
+  local inventory_data = singleton:UniqueIDToInventoryData(unique_id)
   if inventory_data then
-    self:UpdateUISoon(inventory_data)
-    self:HSMDeleteMark(inventory_data)
-    self.EmitQueueChanged()
+    singleton:UpdateUISoon(inventory_data)
+    singleton:HSMDeleteMark(inventory_data)
+    singleton.EmitQueueChanged()
   end
 end
 
@@ -1504,7 +1503,7 @@ end
 -- Enqueues one or more copies of inventory_data's request.
 --
 function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
-  self = WritWorthyInventoryList.singleton
+  local singleton = WritWorthyInventoryList.singleton
   if not inventory_data.llc_func then
     -- Either this row should not have had its
     -- "Enqueue" checkbox enabled, or this row
@@ -1521,15 +1520,15 @@ function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
   -- supports the required API. We might get stuck
   -- with some other add-on's older version.
   local i_d = inventory_data
-  local LLC = WritWorthyInventoryList:GetLLC()
+  local LLC = singleton:GetLLC()
   if not LLC[i_d.llc_func] then
-    self:LLC_Missing(i_d.llc_func)
+    singleton:LLC_Missing(i_d.llc_func)
     return
   end
   -- Enable or disable mimic stone request to LLC
   -- depending on savedChariables state.
-  if self:CanMimic(i_d) then
-    i_d.llc_args[6] = self:IsUseMimic(i_d)
+  if singleton:CanMimic(i_d) then
+    i_d.llc_args[6] = singleton:IsUseMimic(i_d)
   end
 
   -- Call LibLazyCrafting to queue it up for later.

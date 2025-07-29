@@ -107,7 +107,8 @@ end
 function WritWorthy.IsAutoQuestableWrit(bag_id, slot_id, quest_state)
   -- Is this a writ that we previously auto-crafted?
   local unique_id = WritWorthy.UniqueID(bag_id, slot_id)
-  local inventory_data = WritWorthyInventoryList.singleton:UniqueIDToInventoryData(unique_id)
+  local singleton = WritWorthyInventoryList.singleton
+  local inventory_data = singleton:UniqueIDToInventoryData(unique_id)
   if not (inventory_data and inventory_data.ui_is_completed) then
     return false
   end

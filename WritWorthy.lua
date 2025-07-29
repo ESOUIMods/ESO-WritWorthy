@@ -8,7 +8,7 @@ local WW = WritWorthy
 local LAM2 = LibAddonMenu2
 
 WritWorthy.name = "WritWorthy"
-WritWorthy.version = "7.4.9"
+WritWorthy.version = "7.5.0"
 WritWorthy.savedVarVersion = 1
 
 WritWorthy.default = {
@@ -325,8 +325,9 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
   if not unique_id then
     unique_id = control.WritWorthy_UniqueId
   end
-  if unique_id and WritWorthyInventoryList.singleton then
-    local inventory_data = WritWorthyInventoryList.singleton:UniqueIDToInventoryData(unique_id)
+  local singleton = WritWorthyInventoryList.singleton
+  if unique_id and singleton then
+    local inventory_data = singleton:UniqueIDToInventoryData(unique_id)
     if inventory_data then
       local text = nil
       local color = nil

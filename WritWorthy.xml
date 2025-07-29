@@ -41,7 +41,7 @@
           <OnClicked>WritWorthyInventoryList_SortByStation()</OnClicked>
         </Button>
         <Control name="$(parent)MaxGPV">
-          <Dimensions width="200" />
+          <Dimensions x="200" />
           <Anchor point="RIGHT" relativeTo="$(parent)SortByStation" relativePoint="LEFT" offsetX="-100" offsetY="0" />
           <Controls>
             <Backdrop name="$(parent)Backdrop" tier="HIGH" inherits="ZO_EditBackdrop">
